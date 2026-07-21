@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Privacidad — Frame Perdido</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎞️</text></svg>" />
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a0a0f;
+            color: #e8e8f0;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            line-height: 1.8;
+        }
+        a {
+            color: #ff6b35;
+            text-decoration: none;
+        }
+        a:hover { text-decoration: underline; }
+        .back {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 10px 20px;
+            background: #ff6b35;
+            color: #fff;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔒 Política de Privacidad</h1>
+    
+    <p><strong>Última actualización:</strong> 21 de julio de 2026</p>
+    
+    <h2>📊 Datos que recopilamos</h2>
+    <p>Frame Perdido <strong>no recopila, almacena ni comparte</strong> ningún dato personal de los usuarios. Esta página es un sitio estático que no utiliza cookies ni herramientas de seguimiento.</p>
+    
+    <h2>🔗 Enlaces externos</h2>
+    <p>Algunas páginas pueden contener enlaces a sitios externos (YouTube, Blogger, etc.). No somos responsables de las políticas de privacidad de esos sitios.</p>
+    
+    <h2>🛡️ Seguridad</h2>
+    <p>Al ser un sitio estático alojado en GitHub Pages, no almacenamos información de usuarios. La conexión es segura mediante HTTPS.</p>
+    
+    
+    <a href="/Frame-perdido/" class="back">← Volver al inicio</a>
+</body>
+</html>
