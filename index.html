@@ -1,0 +1,1996 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Frame Perdido — Archivo de anime clásico</title>
+    <meta name="description" content="Rescatando OVAs, películas y series de anime clásico poco conocidas de los 80 y 90." />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+    <style>
+        :root {
+            --bg: #0a0a0f;
+            --bg-card: #12121a;
+            --bg-elevated: #1a1a25;
+            --bg-hover: #222230;
+            --text: #e8e8f0;
+            --text-muted: #8a8a9a;
+            --text-dim: #5a5a6a;
+            --accent: #ff6b35;
+            --accent-soft: #ff6b3520;
+            --accent-glow: #ff6b3560;
+            --border: #2a2a3a;
+            --border-hover: #3a3a50;
+            --warning: #fbbf24;
+            --danger: #ef4444;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        .bg-animation {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -2;
+            background: radial-gradient(circle at 20% 80%, var(--accent-glow) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, #6366f120 0%, transparent 50%),
+                        radial-gradient(circle at 50% 50%, #1a1a2e 0%, var(--bg) 70%);
+        }
+        .noise {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+            pointer-events: none;
+        }
+        header {
+            padding: 16px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            background: rgba(10, 10, 15, 0.95);
+            backdrop-filter: blur(20px);
+            z-index: 100;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+        .logo-icon {
+            width: 36px; height: 36px;
+            background: var(--accent);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+        }
+        .logo-text {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text);
+        }
+        .logo-text span { color: var(--accent); }
+        nav {
+            display: flex;
+            gap: 6px;
+        }
+        nav a {
+            color: var(--text-muted);
+            text-decoration: none;
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        nav a:hover, nav a.active {
+            color: var(--text);
+            background: var(--bg-elevated);
+        }
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text);
+            font-size: 1.4rem;
+            cursor: pointer;
+        }
+        .hero {
+            padding: 80px 24px 40px;
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        .hero h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2.8rem;
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 16px;
+        }
+        .hero h1 .highlight {
+            background: linear-gradient(135deg, var(--accent), #fbbf24);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero p {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            max-width: 500px;
+            margin: 0 auto 28px;
+        }
+        .hero-cta {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .btn {
+            padding: 11px 24px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            border: none;
+            font-family: 'Inter', sans-serif;
+        }
+        .btn-primary {
+            background: var(--accent);
+            color: #fff;
+            box-shadow: 0 4px 20px var(--accent-glow);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px var(--accent-glow);
+        }
+        .btn-secondary {
+            background: var(--bg-elevated);
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+        .btn-secondary:hover { border-color: var(--border-hover); }
+        .btn-random {
+            background: var(--bg-elevated);
+            color: var(--warning);
+            border: 1px solid var(--warning);
+        }
+        .btn-random:hover { background: rgba(251, 191, 36, 0.1); }
+        .stats-bar {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            padding: 24px 20px;
+            max-width: 500px;
+            margin: 0 auto;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+        .stat-item { text-align: center; }
+        .stat-number {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .search-section {
+            max-width: 560px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+        .search-box {
+            position: relative;
+            width: 100%;
+        }
+        .search-box input {
+            width: 100%;
+            padding: 14px 20px 14px 48px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: var(--text);
+            font-size: 0.95rem;
+            font-family: 'Inter', sans-serif;
+            outline: none;
+            transition: all 0.3s;
+        }
+        .search-box input::placeholder { color: var(--text-muted); }
+        .search-box input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-soft);
+        }
+        .search-box .search-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.1rem;
+            pointer-events: none;
+        }
+        .search-clear {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 1.1rem;
+            display: none;
+        }
+        .search-clear.visible { display: block; }
+        .search-results-count {
+            text-align: center;
+            margin-top: 10px;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            min-height: 20px;
+        }
+        .section {
+            padding: 50px 24px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 28px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .section-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        .section-title .icon {
+            color: var(--accent);
+            margin-right: 6px;
+        }
+        .section-meta {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+        .featured-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            overflow: hidden;
+            display: grid;
+            grid-template-columns: 1fr 1.3fr;
+            transition: all 0.4s;
+            cursor: pointer;
+        }
+        .featured-card:hover {
+            border-color: var(--border-hover);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+        }
+        .featured-image {
+            position: relative;
+            min-height: 380px;
+            overflow: hidden;
+        }
+        .featured-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s;
+        }
+        .featured-card:hover .featured-image img { transform: scale(1.05); }
+        .year-badge {
+            position: absolute;
+            top: 16px; left: 16px;
+            background: var(--accent);
+            color: #fff;
+            padding: 5px 12px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.8rem;
+            z-index: 2;
+        }
+        .rarity-badge {
+            position: absolute;
+            bottom: 16px; left: 16px;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(10px);
+            color: var(--warning);
+            padding: 5px 12px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            border: 1px solid var(--warning);
+            z-index: 2;
+        }
+        .featured-content {
+            padding: 32px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .expediente-block {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 14px 18px;
+            margin-bottom: 16px;
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        .exp-label {
+            color: var(--text-dim);
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+        }
+        .exp-value {
+            color: var(--accent);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        .exp-status {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 6px;
+        }
+        .exp-status-dot {
+            width: 7px; height: 7px;
+            border-radius: 50%;
+            background: var(--accent);
+            box-shadow: 0 0 8px var(--accent-glow);
+        }
+        .featured-tags {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 14px;
+            flex-wrap: wrap;
+        }
+        .tag {
+            background: var(--bg-elevated);
+            color: var(--text-muted);
+            padding: 3px 10px;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            font-weight: 500;
+            border: 1px solid var(--border);
+        }
+        .tag.accent {
+            background: var(--accent-soft);
+            color: var(--accent);
+            border-color: var(--accent-glow);
+        }
+        .featured-content h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.7rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        .featured-meta {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-bottom: 16px;
+        }
+        .featured-meta span { margin-right: 14px; }
+        .featured-desc {
+            color: var(--text-muted);
+            line-height: 1.7;
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+        }
+        .featured-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .filters {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .filter-btn {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            padding: 7px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 500;
+            transition: all 0.3s;
+            font-family: 'Inter', sans-serif;
+        }
+        .filter-btn:hover, .filter-btn.active {
+            background: var(--accent-soft);
+            color: var(--accent);
+            border-color: var(--accent-glow);
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 20px;
+        }
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4,0,0.2,1);
+            cursor: pointer;
+        }
+        .card:hover {
+            transform: translateY(-6px);
+            border-color: var(--border-hover);
+            box-shadow: 0 16px 32px rgba(0,0,0,0.3);
+        }
+        .card.hidden { display: none; }
+        .card-image {
+            height: 380px;
+            position: relative;
+            overflow: hidden;
+        }
+        .card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        .card:hover .card-image img { transform: scale(1.06); }
+        .card-year {
+            position: absolute;
+            top: 12px; left: 12px;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(10px);
+            color: #fff;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            z-index: 2;
+        }
+        .card-body { padding: 18px; }
+        .card-tags {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 8px;
+            flex-wrap: wrap;
+        }
+        .card-tag {
+            font-size: 0.65rem;
+            padding: 2px 8px;
+            border-radius: 4px;
+            background: var(--bg-elevated);
+            color: var(--text-muted);
+        }
+        .card h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        .card p {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            line-height: 1.5;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .card-footer {
+            padding: 0 18px 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .card-vibes {
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
+        }
+        .vibe-tag {
+            font-size: 0.7rem;
+            color: var(--accent);
+            background: var(--accent-soft);
+            padding: 3px 10px;
+            border-radius: 20px;
+        }
+        .no-results {
+            text-align: center;
+            padding: 50px 20px;
+            color: var(--text-muted);
+            display: none;
+        }
+        .no-results.visible { display: block; }
+        .listas-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 18px;
+        }
+        .lista-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        .lista-card:hover {
+            border-color: var(--accent-glow);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 28px rgba(0,0,0,0.3);
+        }
+        .lista-card .lista-icon { font-size: 1.8rem; margin-bottom: 10px; }
+        .lista-card h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+        .lista-card p {
+            color: var(--text-muted);
+            font-size: 0.82rem;
+            line-height: 1.5;
+        }
+        .lista-card .lista-count {
+            color: var(--accent);
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+        .vibes-section { text-align: center; }
+        .vibes-cloud {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            max-width: 650px;
+            margin: 0 auto;
+        }
+        .vibe-btn {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            padding: 9px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: all 0.3s;
+            font-family: 'Inter', sans-serif;
+        }
+        .vibe-btn:hover, .vibe-btn.active {
+            background: var(--accent-soft);
+            color: var(--accent);
+            border-color: var(--accent-glow);
+            transform: scale(1.05);
+        }
+        .sobre-text {
+            max-width: 650px;
+            margin: 0 auto 30px;
+            color: var(--text-muted);
+            line-height: 1.8;
+            font-size: 0.95rem;
+        }
+        .sobre-text p { margin-bottom: 16px; }
+        .sobre-text ul { margin-left: 20px; margin-bottom: 16px; }
+        .sobre-text li { margin-bottom: 5px; }
+        
+        /* ============================================ */
+        /* MODAL CON REEL TAMAÑO CORRECTO 9:16          */
+        /* ============================================ */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.88);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            overflow-y: auto;
+        }
+        .modal-overlay.active {
+            display: flex;
+            opacity: 1;
+        }
+        .modal {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            max-width: 800px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            transform: scale(0.92);
+            transition: transform 0.3s;
+        }
+        .modal-overlay.active .modal { transform: scale(1); }
+        .modal-close {
+            position: absolute;
+            top: 16px; right: 16px;
+            width: 36px; height: 36px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            color: var(--text);
+            font-size: 1.3rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            transition: all 0.3s;
+        }
+        .modal-close:hover {
+            background: var(--danger);
+            border-color: var(--danger);
+        }
+        .modal-image {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+            border-radius: 20px 20px 0 0;
+        }
+        .modal-content { padding: 28px; }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .modal-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.6rem;
+            font-weight: 700;
+        }
+        .modal-meta {
+            display: flex;
+            gap: 14px;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+        .modal-meta span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .modal-tags {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+        .modal-desc {
+            color: var(--text-muted);
+            line-height: 1.7;
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+        }
+        .modal-section { margin-bottom: 20px; }
+        .modal-section h4 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.95rem;
+            color: var(--accent);
+            margin-bottom: 8px;
+        }
+        .modal-section p, .modal-section ul {
+            color: var(--text-muted);
+            font-size: 0.88rem;
+            line-height: 1.7;
+        }
+        .modal-section ul { padding-left: 18px; }
+        .modal-section li { margin-bottom: 5px; }
+        
+        /* REEL CONTAINER - TAMAÑO 9:16 */
+        #modalReelContainer {
+            position: relative;
+            padding-bottom: 177.77%;
+            height: 0;
+            overflow: hidden;
+            max-width: 320px;
+            margin: 0 auto;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            background: var(--bg);
+        }
+        #modalReelFrame {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            border: 0;
+        }
+        
+        .modal-related {
+            margin-top: 28px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+        }
+        .modal-related h4 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.95rem;
+            color: var(--accent);
+            margin-bottom: 14px;
+        }
+        .related-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 10px;
+        }
+        .related-card {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .related-card:hover {
+            border-color: var(--accent-glow);
+            background: var(--bg-hover);
+        }
+        .related-card h5 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 3px;
+        }
+        .related-card span {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+        }
+        footer {
+            border-top: 1px solid var(--border);
+            background: var(--bg-card);
+            margin-top: 40px;
+        }
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 50px 24px 24px;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 32px;
+        }
+        .footer-brand .logo-text {
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+            display: inline-block;
+        }
+        .footer-brand p {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+        .footer-socials {
+            display: flex;
+            gap: 10px;
+        }
+        .footer-socials a {
+            width: 36px; height: 36px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+        }
+        .footer-socials a:hover {
+            background: var(--accent-soft);
+            border-color: var(--accent-glow);
+            transform: translateY(-2px);
+        }
+        .footer-col h4 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.9rem;
+            color: var(--text);
+            margin-bottom: 14px;
+        }
+        .footer-col ul { list-style: none; }
+        .footer-col li { margin-bottom: 8px; }
+        .footer-col a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: color 0.3s;
+        }
+        .footer-col a:hover { color: var(--accent); }
+        .footer-bottom {
+            border-top: 1px solid var(--border);
+            padding: 20px 24px;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+        }
+        .footer-bottom a {
+            color: var(--text-muted);
+            text-decoration: none;
+            margin: 0 10px;
+            transition: color 0.3s;
+        }
+        .footer-bottom a:hover { color: var(--accent); }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg); }
+        ::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover { background: var(--border-hover); }
+        
+        /* ============================================ */
+        /* RESPONSIVE - TABLETS Y MÓVILES               */
+        /* ============================================ */
+        @media (max-width: 1024px) {
+            .grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+            #modalReelContainer { max-width: 300px; }
+        }
+        @media (max-width: 768px) {
+            .hero { padding: 50px 20px 30px; }
+            .hero h1 { font-size: 2rem; }
+            .featured-card { grid-template-columns: 1fr; }
+            .featured-image { min-height: 300px; }
+            .featured-content { padding: 24px; }
+            .card-image { height: 320px; }
+            header { padding: 14px 16px; }
+            .section { padding: 36px 16px; }
+            nav {
+                display: none;
+                position: absolute;
+                top: 65px; left: 0; right: 0;
+                background: var(--bg-card);
+                flex-direction: column;
+                padding: 16px;
+                border-bottom: 1px solid var(--border);
+                z-index: 99;
+            }
+            nav.active { display: flex; }
+            .mobile-menu-btn { display: block; }
+            .footer-content { grid-template-columns: 1fr; gap: 28px; }
+            .modal-content { padding: 20px; }
+            .modal-image { height: 200px; }
+            .stats-bar { gap: 24px; }
+            .stat-number { font-size: 1.5rem; }
+            .grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 14px; }
+            #modalReelContainer { max-width: 280px; }
+        }
+        @media (max-width: 480px) {
+            .hero h1 { font-size: 1.7rem; }
+            .card-image { height: 280px; }
+            .grid { grid-template-columns: 1fr; }
+            .listas-grid { grid-template-columns: 1fr; }
+            .filters { gap: 5px; }
+            .filter-btn { padding: 6px 12px; font-size: 0.75rem; }
+            .modal-image { height: 160px; }
+            .modal-content { padding: 16px; }
+            #modalReelContainer { max-width: 240px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation"></div>
+    <div class="noise"></div>
+
+    <header>
+        <a href="#inicio" class="logo">
+            <div class="logo-icon">🎞️</div>
+            <div class="logo-text">Frame <span>Perdido</span></div>
+        </a>
+        <nav id="mainNav">
+            <a href="#inicio" class="active">Inicio</a>
+            <a href="#catalogo">Catálogo</a>
+            <a href="#listas">Listas</a>
+            <a href="#vibes">Vibes</a>
+            <a href="#sobre">Sobre</a>
+        </nav>
+        <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
+    </header>
+
+    <section class="hero" id="inicio">
+        <h1>Rescatando clásicos<br /><span class="highlight">Compartiendo historias</span></h1>
+        <p>Explora OVAs, películas y especiales que dejaron huella, aunque nunca alcanzaran la fama de los grandes clásicos</p>
+        <div class="hero-cta">
+            <a href="#catalogo" class="btn btn-primary">Explorar catálogo</a>
+            <a href="#vibes" class="btn btn-secondary">Buscar por vibe</a>
+            <button class="btn btn-random" onclick="randomAnime()">🎲 Anime aleatorio</button>
+        </div>
+    </section>
+
+    <div class="stats-bar">
+        <div class="stat-item"><div class="stat-number" id="statTotal">0</div><div class="stat-label">Expedientes</div></div>
+        <div class="stat-item"><div class="stat-number" id="statOVAs">0</div><div class="stat-label">OVAs</div></div>
+        <div class="stat-item"><div class="stat-number" id="statPelis">0</div><div class="stat-label">Películas</div></div>
+    </div>
+
+    <section class="search-section">
+        <div class="search-box">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="searchInput" placeholder="Busca por título, año, estudio, director o género..." />
+            <button class="search-clear" id="searchClear">✕</button>
+        </div>
+        <div class="search-results-count" id="searchResults"></div>
+    </section>
+
+    <section class="section" id="featured">
+        <div class="section-header">
+            <h2 class="section-title"><span class="icon">✦</span>Expediente del Día</h2>
+            <span class="section-meta">Actualizado cada 24h</span>
+        </div>
+        <div class="featured-card" id="featuredCard">
+            <div class="featured-image">
+                <img src="" alt="" id="featuredImg" />
+                <span class="year-badge" id="featuredYear">----</span>
+                <span class="rarity-badge">⚡ Obra recuperada</span>
+            </div>
+            <div class="featured-content">
+                <div class="expediente-block">
+                    <div class="exp-label">📁 Expediente recuperado</div>
+                    <div class="exp-value" id="featuredExpId">#---</div>
+                    <div class="exp-status"><span class="exp-status-dot"></span><span style="font-size:0.75rem;color:var(--text-muted)">Recuperado del archivo</span></div>
+                </div>
+                <div class="featured-tags" id="featuredTags"></div>
+                <h2 id="featuredTitle">---</h2>
+                <div class="featured-meta" id="featuredMeta"></div>
+                <p class="featured-desc" id="featuredDesc">---</p>
+                <div class="featured-actions">
+                    <button class="btn btn-primary" onclick="event.stopPropagation();openModal(featuredId)">Abrir expediente</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="catalogo">
+        <div class="section-header">
+            <h2 class="section-title"><span class="icon">◈</span>Catálogo</h2>
+            <div class="filters" id="filterContainer">
+                <button class="filter-btn active" data-filter="all">Todos</button>
+                <button class="filter-btn" data-filter="ova">OVAs</button>
+                <button class="filter-btn" data-filter="pelicula">Películas</button>
+                <button class="filter-btn" data-filter="serie">Series</button>
+                <button class="filter-btn" data-filter="80s">80s</button>
+                <button class="filter-btn" data-filter="90s">90s</button>
+                <button class="filter-btn" data-filter="cyberpunk">Cyberpunk</button>
+                <button class="filter-btn" data-filter="sci-fi">Sci-Fi</button>
+                <button class="filter-btn" data-filter="drama">Drama</button>
+                <button class="filter-btn" data-filter="accion">Acción</button>
+                <button class="filter-btn" data-filter="horror">Horror</button>
+                <button class="filter-btn" data-filter="mecha">Mecha</button>
+            </div>
+        </div>
+        <div class="no-results" id="noResults">
+            <p style="font-size:1.1rem;margin-bottom:6px;">😕 Nada por aquí</p>
+            <p>Prueba con otros términos o quita los filtros</p>
+        </div>
+        <div class="grid" id="animeGrid"></div>
+    </section>
+
+    <section class="section" id="listas">
+        <div class="section-header">
+            <h2 class="section-title"><span class="icon">📑</span>Listas</h2>
+            <span class="section-meta">Colecciones curadas</span>
+        </div>
+        <div class="listas-grid" id="listasGrid"></div>
+    </section>
+
+    <section class="section vibes-section" id="vibes">
+        <h2 class="section-title" style="margin-bottom:8px;">¿Qué buscas hoy?</h2>
+        <p style="color:var(--text-muted);margin-bottom:32px;">No por género. Por sensación.</p>
+        <div class="vibes-cloud" id="vibesCloud"></div>
+    </section>
+
+    <section class="section" id="sobre">
+        <div class="section-header">
+            <h2 class="section-title"><span class="icon">📋</span>Sobre Frame Perdido</h2>
+        </div>
+        <div class="sobre-text">
+            <p>Frame Perdido nació de una pregunta simple: <strong style="color:var(--text)">¿Qué pasó con todo ese anime que no aparece en los tops?</strong></p>
+            <p>No hablamos de Evangelion ni de Cowboy Bebop. Hablamos de las OVAs que solo existieron en VHS, de las películas que se proyectaron una vez en un festival y desaparecieron, de los experimentos visuales que los estudios hicieron cuando nadie les decía qué no podían hacer.</p>
+            <p>Cada expediente responde a cinco preguntas:</p>
+            <ul>
+                <li>¿Qué es esta obra?</li>
+                <li>¿Por qué merece ser vista hoy?</li>
+                <li>¿Qué la hace diferente?</li>
+                <li>¿Por qué terminó siendo olvidada?</li>
+                <li>¿Qué otras obras similares recomendarías?</li>
+            </ul>
+            <p>Este archivo crece día a día. Si tienes una recomendación, escríbenos en redes.</p>
+        </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- MODAL CON REEL TAMAÑO 9:16                   -->
+    <!-- ============================================ -->
+    <div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+        <div class="modal" onclick="event.stopPropagation()">
+            <button class="modal-close" onclick="closeModal()">✕</button>
+            <img class="modal-image" id="modalImage" src="" alt="" />
+            <div class="modal-content">
+                <div class="expediente-block" style="margin-bottom:16px;">
+                    <div class="exp-label">📁 Expediente recuperado</div>
+                    <div class="exp-value" id="modalExpId"></div>
+                    <div class="exp-status"><span class="exp-status-dot"></span><span style="font-size:0.75rem;color:var(--text-muted)">Recuperado del archivo</span></div>
+                </div>
+                <div class="modal-header"><h2 class="modal-title" id="modalTitle"></h2></div>
+                <div class="modal-meta" id="modalMeta"></div>
+                <div class="modal-tags" id="modalTags"></div>
+                <p class="modal-desc" id="modalDesc"></p>
+                <div class="modal-section"><h4>🎬 ¿De qué trata?</h4><p id="modalPlot"></p></div>
+                <div class="modal-section"><h4>💭 ¿Por qué verla?</h4><p id="modalAnalysis"></p></div>
+                <div class="modal-section"><h4>🕰️ ¿Por qué quedó olvidada?</h4><p id="modalForgotten"></p></div>
+                <div class="modal-section"><h4>📋 Ficha técnica</h4><ul id="modalTech"></ul></div>
+                
+                <!-- REEL - TAMAÑO 9:16 (320px max) -->
+                <div class="modal-section" id="modalReelSection">
+                    <h4>🎬 Ver Reel</h4>
+                    <div id="modalReelContainer">
+                        <iframe id="modalReelFrame" allowfullscreen></iframe>
+                    </div>
+                </div>
+                
+                <div class="modal-related" id="modalRelated">
+                    <h4>🎞️ También puedes explorar</h4>
+                    <div class="related-grid" id="relatedGrid"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-brand">
+                <div class="logo-text">Frame <span>Perdido</span></div>
+                <p>El archivo del anime que el tiempo olvidó. OVAs, películas independientes y animación clásica curada con mano, sin algoritmos.</p>
+                <div class="footer-socials">
+                    <a href="#">📘</a>
+                    <a href="#">🎵</a>
+                    <a href="#">📷</a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>Explorar</h4>
+                <ul>
+                    <li><a href="#catalogo">Catálogo</a></li>
+                    <li><a href="#vibes">Buscar por vibe</a></li>
+                    <li><a href="#featured">Expediente del Día</a></li>
+                    <li><a href="#listas">Listas curadas</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Comunidad</h4>
+                <ul>
+                    <li><a href="#">Facebook</a></li>
+                    <li><a href="#">TikTok</a></li>
+                    <li><a href="#">Instagram</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Legal</h4>
+                <ul>
+                    <li><a href="#sobre">Acerca de</a></li>
+                    <li><a href="#">Privacidad</a></li>
+                    <li><a href="#">Contacto</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <span>© 2026 Frame Perdido</span>
+            <a href="#sobre">Acerca de</a>
+            <a href="#">Privacidad</a>
+            <a href="#">Contacto</a>
+        </div>
+    </footer>
+
+    <script>
+        // ============================================================
+        // BASE DE DATOS
+        // ============================================================
+        const animes = [{
+            id: 0,
+            title: "Barefoot Gen",
+            cover: "https://blogger.googleusercontent.com/img/a/AVvXsEjMF-TZtwO2Jyhp2R3PKzwiJ0nQYuR6tI-QE3eyCdLjo1S8GFlm9GTw9UbqhVL1ZAX5L8JOPk31BtoJbEAVbpRzmYC9kEEMQfnL_KTX3IlqkcWO9VvDjw57rs1Jc9qrrShj9rSrjfbzSlHxntenQ1l1_bKLU5uHaPDXUGZqTEHpiGz4DYfNBblSahFT1CHf=w267-h400",
+            year: 1983,
+            type: "Película",
+            duration: "85 min",
+            studio: "Madhouse",
+            director: "Mori Masaki",
+            genre: ["Drama", "Histórico", "Bélico"],
+            tags: ["drama", "histórico", "bélico", "melancólico", "violento"],
+            description: "La historia de un niño que sobrevive al bombardeo atómico de Hiroshima.",
+            plot: "Gen vive con su familia en Hiroshima durante los últimos días de la Segunda Guerra Mundial.",
+            analysis: "No es una película fácil de ver. Es cruda, dolorosa y te deja sin aliento.",
+            forgotten: "A pesar de ser una obra maestra, hoy es más conocida por su reputación que por haber sido vista.",
+            reel: "https://video.fmga9-2.fna.fbcdn.net/o1/v/t2/f2/m412/AQOvjkLcaO4V4OdvsEhKTVkEGO8SJ1D8XqL7Oqo7B8xHgonQUTYFyEyapRRij0ZzoSSpIr4Tei1WrCJqAv7GXeeLNQmm1ueUpZWrIBd77A.mp4?_nc_cat=100&_nc_oc=Adp6gm0NdzHoGsQMk9jybSxOXgpQAsTxPjROaTanrxogleTrz-4jDWkBiIbaAQf6NhQ&_nc_sid=8bf8fe&_nc_ht=video.fmga9-2.fna.fbcdn.net&_nc_ohc=JaNq9qq8bWEQ7kNvwHzmMj0&efg=eyJ2ZW5jb2RlX3RhZyI6Inhwdl9wcm9ncmVzc2l2ZS5GQUNFQk9PSy4uQzMuMzYwLnN2ZV9zZCIsInhwdl9hc3NldF9pZCI6MTAyNjkzMjQxNjQ1OTE0MSwiYXNzZXRfYWdlX2RheXMiOjIxLCJ2aV91c2VjYXNlX2lkIjoxMDEyMiwiZHVyYXRpb25fcyI6MTE4LCJ1cmxnZW5fc291cmNlIjoid3d3In0%3D&ccb=17-1&_nc_gid=pzfC_bEBvVlQ9nECPgZ1sA&_nc_ss=7b2a8&_nc_zt=28&oh=00_AQAqN7PY38Shz6Q40ijzP7FoEx9D-0PyYvEimU6V1Tcc3Q&oe=6A65A09E&bitrate=512006&tag=sve_sd",
+            related: [1, 16, 18]
+        }, {
+            id: 1,
+            title: "Barefoot Gen 2",
+            cover: "https://blogger.googleusercontent.com/img/a/AVvXsEjRwJcTh3oV7wpGSoRxUW_GJgtoiMc7_wx_r7RHjjVpQFS7PHX6ioqI0HuxiUkFWfklaKH76yWnlXOdUz8MMbE7i3RMGXHoTgf2Zbveakpfy3HEjav5Ck8mCoCjQEhsjEmG3p6BB5zZYQkall9MkxTfUn45mvMOSTNbjWlbaWks8hODUri9D0CUqsK1I-p9=w238-h400",
+            year: 1986,
+            type: "Película",
+            duration: "85 min",
+            studio: "Madhouse",
+            director: "Toshio Hirata",
+            genre: ["Drama", "Histórico", "Bélico"],
+            tags: ["drama", "histórico", "bélico", "melancólico"],
+            description: "Tres años después de la bomba, Gen sigue luchando por sobrevivir.",
+            plot: "Tres años después del bombardeo, Gen vive en la miseria con su madre y hermano adoptivo.",
+            analysis: "Mientras la primera película muestra el impacto inmediato, esta secuela se centra en las consecuencias.",
+            forgotten: "Mucho menos conocida que su predecesora, esta secuela es una rareza.",
+            reel: "",
+            related: [0, 16, 23]
+        }, {
+            id: 2,
+            title: "Plastic Little",
+            cover: "https://blogger.googleusercontent.com/img/a/AVvXsEjDUAulBCVMTe7LK9nyBH-dtlaccK8gIPNkDAOJxlVeJCPVyxUt0QTX4jVvUUTJYPotrW6GUIvph9ysjv7joc7Ktvg3fFwExVOUPCSvB3AAImyAd5ER701FtZzuoyYviZcqJFTbqujSs93JuCZITP-1_JaZnd71mVAguD3cUyN8j6SQL0HczIYjtiJ54H4F=w288-h400",
+            year: 1994,
+            type: "OVA",
+            duration: "47 min",
+            studio: "AIC / Animate",
+            director: "Kinji Yoshimoto",
+            genre: ["Ciencia ficción", "Aventura", "Comedia"],
+            tags: ["ciencia-ficción", "aventura", "comedia", "cyberpunk", "espacial"],
+            description: "Una cazadora de criaturas espaciales protege a una misteriosa chica.",
+            plot: "Tita es una cazadora de criaturas espaciales que rescata a una fugitiva llamada Elysse.",
+            analysis: "Animación espectacular y diseño de personajes de Satoshi Urushihara.",
+            forgotten: "Nunca llegó a tener una gran franquicia. Es un clásico de culto.",
+            reel: "",
+            related: [5, 20, 21]
+        }, {
+            id: 3,
+            title: "Big Wars",
+            cover: "https://blogger.googleusercontent.com/img/a/AVvXsEh5afmuycAaAShppiHCLIGwxyncXnHStD7iYZiADo40rDLxWw0rTvdwPTFIXQ_6SCWLMJXNBTQJC88d9xi9zYkiYszXT9myzn_UMhPqKSLbZ4hOGGtqgW_ZNa-V92grKpzKW069Cxo9KHg-MMOlXElvAnZEtS-SnsKVIeyaAZsvTeeHe7xzg-zodUtiq-Ce=w280-h400",
+            year: 1993,
+            type: "OVA",
+            duration: "70 min",
+            studio: "Magic Bus",
+            director: "Toshifumi Takizawa",
+            genre: ["Ciencia ficción", "Mecha", "Espacial"],
+            tags: ["ciencia-ficción", "mecha", "espacial", "guerra", "acción"],
+            description: "Guerra espacial contra una raza alienígena que se hace llamar 'Dioses'.",
+            plot: "La humanidad coloniza Marte y entra en guerra con una raza alienígena.",
+            analysis: "Pura ciencia ficción espacial con grandes batallas y naves enormes.",
+            forgotten: "Su distribución fuera de Japón fue casi nula.",
+            reel: "https://video.fmga9-3.fna.fbcdn.net/o1/v/t2/f2/m412/AQNuz_c6QMsBEEMKx3z6AspoWoFWkLYQOATxV9oFBw2v1F5Nz0PyiU_9w7lQ1zeXkVudMYjwtTb9bTSDJ1w0s2E02XoEI9xZxHEgE23rNQ.mp4?_nc_cat=110&_nc_oc=AdrxD5ol7Pd1nh_CWYdyWj7uq0baAwinlmhH0dDEIpJ2UYWMoF6V1DFDaTCHWKNwkhM&_nc_sid=8bf8fe&_nc_ht=video.fmga9-3.fna.fbcdn.net&_nc_ohc=DCkW_WUAQv0Q7kNvwGrPfSf&efg=eyJ2ZW5jb2RlX3RhZyI6Inhwdl9wcm9ncmVzc2l2ZS5GQUNFQk9PSy4uQzMuMzYwLnN2ZV9zZCIsInhwdl9hc3NldF9pZCI6MTUxMDg4MTc1MzMzMDI5NCwiYXNzZXRfYWdlX2RheXMiOjE3LCJ2aV91c2VjYXNlX2lkIjoxMDEyMiwiZHVyYXRpb25fcyI6MTE3LCJ1cmxnZW5fc291cmNlIjoid3d3In0%3D&ccb=17-1&_nc_gid=Tx8Kff8pv4nuF1OzsGbToQ&_nc_ss=7b2a8&_nc_zt=28&oh=00_AQB37Jt3Yo_uCUDBSB15-BiVwxnI3V2wPb8m5o_zXQVi9g&oe=6A657748&bitrate=305927&tag=sve_sd",
+            related: [5, 19, 20]
+        }, {
+            id: 4,
+            title: "Nineteen 19",
+            cover: "https://blogger.googleusercontent.com/img/a/AVvXsEhvly5x4_ftaet0n1igj1okjAtumrWdQqhwhk5p3Xq94xaCFCr2TlnFZ2ZsKc5hXxL8uzAOLPzJk10vk5XpWg6ASg0_kbh9JQ9raSy9MoH3WsvZPaQ6z5fNlrSJi6dPftI5EPe5Sw0Ly_OwMcquRrhEP7dzfgOILdyDziaM_z6-DUmTe5JQ8Zel5h1BgHn1=w309-h400",
+            year: 1990,
+            type: "OVA",
+            duration: "42 min",
+            studio: "Madhouse",
+            director: "Koichi Chigira",
+            genre: ["Drama", "Romance", "Recuentos de la vida"],
+            tags: ["drama", "romance", "recuentos", "nostálgico", "melancólico"],
+            description: "Un joven de 19 años busca el amor y se reencuentra con su primer amor.",
+            plot: "Kazushi Kubota busca novia y se reencuentra con su primer amor en un club.",
+            analysis: "Un OVA romántico y melancólico. Ideal para una noche de domingo.",
+            forgotten: "Un OVA de romance puro, fácil de pasar por alto en una época dominada por el sci-fi.",
+            reel: "https://video.fmga9-2.fna.fbcdn.net/o1/v/t2/f2/m412/AQNbobnd3IGEr5M1rC4Y8DyZBetg7Zpm5l_Ca112HSu_vuGURW4KfWikvcB8WjZoi5IlA32QqPcVb-tz646eXy4Psyj2x4X4eZnWIUFIoA.mp4?_nc_cat=103&_nc_oc=Adr2MUV6Hg8V2IZv08R3agK-M985CG67cTqEXcjohrKY1LjE2PHgC0H6J1ymbt8-Lng&_nc_sid=8bf8fe&_nc_ht=video.fmga9-2.fna.fbcdn.net&_nc_ohc=uD9ocIOI68IQ7kNvwFsR_Ti&efg=eyJ2ZW5jb2RlX3RhZyI6Inhwdl9wcm9ncmVzc2l2ZS5GQUNFQk9PSy4uQzMuMzYwLnN2ZV9zZCIsInhwdl9hc3NldF9pZCI6MjAxMDU4NDk3MzE3OTMxNywiYXNzZXRfYWdlX2RheXMiOjE5LCJ2aV91c2VjYXNlX2lkIjoxMDEyMiwiZHVyYXRpb25fcyI6ODAsInVybGdlbl9zb3VyY2UiOiJ3d3cifQ%3D%3D&ccb=17-1&_nc_gid=QMAilHvybEn_6EnJkSBIxQ&_nc_ss=7b2a8&_nc_zt=28&oh=00_AQDP0YnDgkXbLR7dZQAZy2OzJyiZ7Cs5oSVpc-AkwRihdg&oe=6A656FEB&bitrate=174224&tag=sve_sd",
+            related: [21, 16]
+        }, {
+            id: 5,
+            title: "Lily C.A.T.",
+            cover: "https://blogger.googleusercontent.com/img/a/AVvXsEhg_1kIOwslOhHS9gQYx3L1fk5zQBZKdDgiq9C0IKkrMDQh2mUmb0MO1M5KCXnNW7PryIW5Tyoe7BcmhIifte0-PUZQtHBVH0ofwke8TJRetQLEH1KjH0iMjUyDaei1tHo70xHVk_tdLJM2rk-3x6nNXoAyhHybDFH0S5Fu4UWzwKNAf8zlDf5lEJQNysvd=w242-h400",
+            year: 1987,
+            type: "Película",
+            duration: "67 min",
+            studio: "Studio Pierrot",
+            director: "Hisayuki Toriumi",
+            genre: ["Ciencia ficción", "Terror"],
+            tags: ["ciencia-ficción", "terror", "espacial", "nocturno", "claustrofóbico"],
+            description: "Terror espacial japonés con atmósfera cercana a 'Alien'.",
+            plot: "Una nave espacial despierta de hibernación y descubre una criatura infiltrada.",
+            analysis: "Inspirada en 'Alien' con un toque japonés y diseño de Yoshitaka Amano.",
+            forgotten: "Su distribución internacional fue muy limitada.",
+            reel: "https://video.fmga9-3.fna.fbcdn.net/o1/v/t2/f2/m412/AQOLANgIVFHntlbrwUjArmXNh-D-NzfA2bKRTDwxtBy2AzXYBgT2k5hTiRsySLbo28U4QRl0kq3OTmG8mzCcbYId-6eFnMVGA7DLhwVdig.mp4?_nc_cat=111&_nc_oc=AdohpFc-ESsIchkW1JAeSzTVAtunPtaCOFab0LCfZsBo28WgVnBe2nWM_slDxlZKd1o&_nc_sid=8bf8fe&_nc_ht=video.fmga9-3.fna.fbcdn.net&_nc_ohc=ay_sY3jbeCIQ7kNvwHi0bb5&efg=eyJ2ZW5jb2RlX3RhZyI6Inhwdl9wcm9ncmVzc2l2ZS5GQUNFQk9PSy4uQzMuMzYwLnN2ZV9zZCIsInhwdl9hc3NldF9pZCI6MjA4ODcwMTAxMjUyNzA5NCwiYXNzZXRfYWdlX2RheXMiOjE5LCJ2aV91c2VjYXNlX2lkIjoxMDEyMiwiZHVyYXRpb25fcyI6NzksInVybGdlbl9zb3VyY2UiOiJ3d3cifQ%3D%3D&ccb=17-1&_nc_gid=EN7YQAP3vhRjGmjrsqUkFQ&_nc_ss=7b2a8&_nc_zt=28&oh=00_AQCPqoiiciUrazn35BoXMKxguqaQ0dMiDdLK983EQL1caQ&oe=6A657C8F&bitrate=275515&tag=sve_sd",
+            related: [8, 11, 3]
+        }, {
+            id: 6,
+            title: "Roots Search",
+            cover: "https://blogger.googleusercontent.com/img/a/AVvXsEjLmo4GWpgI-0G-EieWHr0M0kA6lBsL4aIkrDia6-uB0Qkt1WqdttQgy9L-iI_fK2_Td-OS-zK1IaEXKtvdaF5tWARVRbBFhhTqGd0AVpXrNqbHXLaC3HPgwnDUnorr68jXlk1mzzY70jRVmgh971VlIlwan4YpheRF-3NeOnr8pWdHhgnsm1C2ZXhX70Gn=w400-h300",
+            year: 1986,
+            type: "OVA",
+            duration: "45 min",
+            studio: "Desconocido",
+            director: "Desconocido",
+            genre: ["Ciencia ficción", "Terror", "Horror espacial"],
+            tags: ["ciencia-ficción", "terror", "espacial", "nocturno", "claustrofóbico", "experimental"],
+            description: "Un equipo de investigación encuentra una nave abandonada y traen algo peor.",
+            plot: "Un equipo encuentra una nave desierta y descubre algo terrorífico.",
+            analysis: "Un OVA de terror espacial cutre y maravilloso con encanto de serie B.",
+            forgotten: "El ejemplo perfecto de OVA que pasó sin pena ni gloria.",
+            reel: "",
+            related: [5, 11, 7]
+        }, {
+            id: 7,
+            title: "Midori: La Niña de las Camelias",
+            cover: "https://blogger.googleusercontent.com/img/a/AVvXsEg0FowtbPx2odlroSexKy_AlwHsWU3HbnWdUMMXMax0yIQGsmx1-jDlnBsqoI26zgj6s6jRN_rBvnzH5ldbzgyuDM_xKf_0T3Ooa3Bt7g2ao1ZF55rl3hA9mfDfg7A95Wrz1RaThwgROIFBWpfz-NGeXSIGeMGEDkOHXWNOgznRriWikwtp2qD0QqRQJpzS=w270-h400",
+            year: 1992,
+            type: "Película",
+            duration: "56 min",
+            studio: "Harada Production",
+            director: "Hiroshi Harada",
+            genre: ["Drama", "Terror", "Psicológico", "Ero-guro"],
+            tags: ["drama", "terror", "psicológico", "violento", "experimental", "nocturno"],
+            description: "Una niña huérfana cae en un circo de fenómenos. Experiencia visual extrema.",
+            plot: "Midori es acogida por el dueño de un circo y sometida a todo tipo de abusos.",
+            analysis: "Una obra de arte perturbadora con animación bellísima y historia cruel.",
+            forgotten: "Fue censurada y sus copias destruidas en Japón.",
+            reel: "https://video.fmga9-2.fna.fbcdn.net/o1/v/t2/f2/m412/AQPV9akZDJposK44RAQaTSFKAfmd1PX8h_jEuG-bnYcUXGEY5hTdn7tJKhwdoQ3-SsuZP6CN5Go9-eBcbeKPTfgqYACh2qMGwGiNc1x_-g.mp4?_nc_cat=105&_nc_oc=AdpUgbz488xblZ2orq-ymb09P39tHeK9JudPqz0rfdXXpHvPXGErb-ANKcvNXkBWOfg&_nc_sid=8bf8fe&_nc_ht=video.fmga9-2.fna.fbcdn.net&_nc_ohc=R2KLDoJ10usQ7kNvwG9_66-&efg=eyJ2ZW5jb2RlX3RhZyI6Inhwdl9wcm9ncmVzc2l2ZS5GQUNFQk9PSy4uQzMuMzYwLnN2ZV9zZCIsInhwdl9hc3NldF9pZCI6OTc0MzQ4OTQyMjcwNjYzLCJhc3NldF9hZ2VfZGF5cyI6MjQsInZpX3VzZWNhc2VfaWQiOjEwMTIyLCJkdXJhdGlvbl9zIjoxMDMsInVybGdlbl9zb3VyY2UiOiJ3d3cifQ%3D%3D&ccb=17-1&_nc_gid=27osSeu5750_FRxBuuKc7w&_nc_ss=7b2a8&_nc_zt=28&oh=00_AQDXyWs_H5Ru_5RBd8W_Amvrwu63pgMvyJ8LNr6oQQDZtA&oe=6A6579B1&bitrate=302525&tag=sve_sd",
+            related: [10, 9]
+        }, {
+            id: 8,
+            title: "MD Geist",
+            cover: "https://blogger.googleusercontent.com/img/a/AVvXsEjFOROHRO0UHSyf-1qnUt06Yez7sKvJia5xbrp1YdK_Igdkxqdo1u89LzRnxJoMJ1KGSu_3I9rvE5iozYqG1Jq3NCtoQVsMJjSkkSUPPTrY15jlnJVvjvQ4G7O_GCX0ThGiS9b7mwUPlh3km6x0kC6eQnyyUfG69dyFWrgAoep4xVKwH2ToMzaGo-VSNVq8=w227-h400",
+            year: 1986,
+            type: "OVA",
+            duration: "44 min",
+            studio: "Nippon Columbia",
+            director: "Hayato Ikeda",
+            genre: ["Ciencia ficción", "Acción", "Mecha"],
+            tags: ["ciencia-ficción", "acción", "mecha", "violento", "guerra"],
+            description: "Un soldado mejorado genéticamente con insaciable sed de batalla.",
+            plot: "Geist es un M.D.S. que despierta de congelación criogénica para volver a la guerra.",
+            analysis: "El prototipo de OVA de acción de los 80. Violento y sin concesiones.",
+            forgotten: "Nunca llegó a ser tan popular como otras series del género.",
+            reel: "https://video.fmga9-3.fna.fbcdn.net/o1/v/t2/f2/m412/AQPDdpaug0HJypGQVzQiGz2HvW6FOklWlmE0TEMIWEBKUCh_wuOI06m0Akp2f539eEJl7dgK-uiwR6s0k_uyIb0tRPR276hcBI4zt4IK-w.mp4?_nc_cat=110&_nc_oc=AdpMHL2mAdZz-MJbzLHsboTKcafVTu2IBBk2BPqFUux3bWejksoHc9h-HG88BKuOf70&_nc_sid=8bf8fe&_nc_ht=video.fmga9-3.fna.fbcdn.net&_nc_ohc=loXPRiSxBCsQ7kNvwHoKFDI&efg=eyJ2ZW5jb2RlX3RhZyI6Inhwdl9wcm9ncmVzc2l2ZS5GQUNFQk9PSy4uQzMuMzYwLnN2ZV9zZCIsInhwdl9hc3NldF9pZCI6MjcyNDMzNTA5OTUzMDY1MjcsImFzc2V0X2FnZV9kYXlzIjoyNSwidmlfdXNlY2FzZV9pZCI6MTAxMjIsImR1cmF0aW9uX3MiOjE0MSwidXJsZ2VuX3NvdXJjZSI6Ind3dyJ9&ccb=17-1&_nc_gid=FNP8kHOoUN54s6VnPGqnZA&_nc_ss=7b2a8&_nc_zt=28&oh=00_AQCO-Y3g2ciNUn42TTDb3_wA9h0LD9gxKnXEFiKp1Da_ig&oe=6A657738&bitrate=274037&tag=sve_sd",
+            related: [10, 12, 20]
+        }, {
+            id: 9,
+            title: "Hell Target",
+            cover: "https://blogger.googleusercontent.com/img/a/AVvXsEjmEGaiC9GNaVrbiYsPTQgbnm38fv87wVL0GOWIj8QvWN_y6zJxy0mTZr8-2m_t08iAeuhnazNo7rSBOzae_nX6TsA1XzzezhEvq5xC_noEELYRNGQe1oMWyfrpQ1nIUZyjN-9RXOvXs3m5c2Y53o7vLcMmkEoqpb0x2OpBHu2HsZ_cyyhTZB2mMjjNje6h=w222-h400",
+            year: 1986,
+            type: "OVA",
+            duration: "50 min",
+            studio: "Nakamura Production",
+            director: "Keizo Nakamura",
+            genre: ["Ciencia ficción", "Terror", "Horror espacial"],
+            tags: ["ciencia-ficción", "terror", "espacial", "nocturno", "claustrofóbico"],
+            description: "Un equipo de exploración en un planeta infernal descubre un secreto terrorífico.",
+            plot: "En el planeta Inferno II, un equipo descubre una amenaza alienígena.",
+            analysis: "OVA de terror espacial que bebe directamente de 'Alien' y 'La Cosa'.",
+            forgotten: "Es una de esas OVAs que solo existieron en VHS.",
+            reel: "https://video.fmga9-2.fna.fbcdn.net/o1/v/t2/f2/m412/AQMX6_MKhmByEXhLUWv04le_sQPqA91OQ4k0QAPDVQDQXbXrYPpGU3On4iV8ebsdLTvNHNilVwGtaEkHrdDrZNr8BX2eVQoQlWhwKacmbg.mp4?_nc_cat=104&_nc_oc=AdrWEqRvvdPsw0D0tHrBvn3yS9ysPOwDScB3ksa7P5mN9n-MVaCVp_mRdtV-yjHhmTk&_nc_sid=8bf8fe&_nc_ht=video.fmga9-2.fna.fbcdn.net&_nc_ohc=PMOIXvxtWGMQ7kNvwHIujAt&efg=eyJ2ZW5jb2RlX3RhZyI6Inhwdl9wcm9ncmVzc2l2ZS5GQUNFQk9PSy4uQzMuMzYwLnN2ZV9zZCIsInhwdl9hc3NldF9pZCI6OTkyNzI3MDIwMDcxNDYxLCJhc3NldF9hZ2VfZGF5cyI6NDksInZpX3VzZWNhc2VfaWQiOjEwMTIyLCJkdXJhdGlvbl9zIjo2NCwidXJsZ2VuX3NvdXJjZSI6Ind3dyJ9&ccb=17-1&_nc_gid=vzQXnmo2whrS2IpO0pf2tg&_nc_ss=7b2a8&_nc_zt=28&oh=00_AQAf3nL66BlPq_q3PhJGbPLM3qfxGQLzNSrkAjBC9WeSOA&oe=6A659892&bitrate=213483&tag=sve_sd",
+            related: [5, 6, 8]
+        }, {
+            id: 10,
+            title: "Ninja Resurrection",
+            cover: "https://blogger.googleusercontent.com/img/a/AVvXsEhzVyH8GPj2zEsTTwenXH7GUlI76D_eFYivEr2BiSV0FqXttCfOUgh5aa0zZkM5yLqTuL9xwAeniYoKxI659OOTlntwb0vxFPScY7MiQKVRTctbBDKTmG3zJaQZg5hHuMnHd-JsKlKRxoo_FgIFyGAyQheAT0QuJ-Q2PlSi7igVFhBpKp2lkotBMUasVDjY=w283-h400",
+            year: 1997,
+            type: "OVA",
+            duration: "70 min (2 episodios)",
+            studio: "J.C.Staff",
+            director: "Yasunori Urata",
+            genre: ["Acción", "Fantasia oscura", "Histórico"],
+            tags: ["acción", "fantasía", "histórico", "violento", "nocturno", "samurái"],
+            description: "El líder de una rebelión cristiana resucita con poderes sobrenaturales.",
+            plot: "Amakusa Shiro resucita con poderes demoníacos para destruir el shogunato.",
+            analysis: "Acción, samuráis, magia y una historia de venganza.",
+            forgotten: "Solo se hicieron dos episodios de los cuatro planeados.",
+            reel: "https://video.fmga9-2.fna.fbcdn.net/o1/v/t2/f2/m412/AQMuCfABFaWNYtEq1SXTt6H1GxlRyQWWGGggx2TCS9dyebfSoOeUmGZEiHldxjrjFAI0bDRbMtl2LYaNATM_zU29gl54u1BJXfCVvZJy4g.mp4?_nc_cat=102&_nc_oc=AdrCzSDg8fwcxeqK15jYCTQZguCpTQ7-VfeLX1vSpmecIDczQVkzsY4vXr0VY8CC5IE&_nc_sid=8bf8fe&_nc_ht=video.fmga9-2.fna.fbcdn.net&_nc_ohc=iYpGWUW47SgQ7kNvwGj1cMk&efg=eyJ2ZW5jb2RlX3RhZyI6Inhwdl9wcm9ncmVzc2l2ZS5GQUNFQk9PSy4uQzMuMzYwLnN2ZV9zZCIsInhwdl9hc3NldF9pZCI6MjIzMjg1MzAxMDg2Mzg5MCwiYXNzZXRfYWdlX2RheXMiOjUwLCJ2aV91c2VjYXNlX2lkIjoxMDEyMiwiZHVyYXRpb25fcyI6NzcsInVybGdlbl9zb3VyY2UiOiJ3d3cifQ%3D%3D&ccb=17-1&_nc_gid=NKB7KFDnrHaoZwGjIOvjeA&_nc_ss=7b2a8&_nc_zt=28&oh=00_AQD6VRWrHwenwPSGDdymRFF8fIFKyydCsEf18ObyPnZO9Q&oe=6A658574&bitrate=222128&tag=sve_sd",
+            related: [8, 12, 13]
+        }, {
+            id: 11,
+            title: "Battle Royal High School",
+            cover: "https://blogger.googleusercontent.com/img/a/AVvXsEj9JcKCaMVHWzlMiDfKsNu3TSNBq-V8P-CSGtFzIsKeRxPdGVFz9_ZYpTrxw87QY-xrKhKRm6ofS-I-X5xZRHFURWFpxVKyphkFyFVgJE0qtdg2Catc_pAXzrHgBF6VtikeuOQm3uq56LfXqcGT-4o0bhgiSKs1-T4cpoBOE_QEuNIZsr2c23HJ3m9p72Em=w258-h400",
+            year: 1987,
+            type: "OVA",
+            duration: "60 min",
+            studio: "DAST",
+            director: "Ichirō Itano",
+            genre: ["Acción", "Fantasía oscura", "Artes marciales"],
+            tags: ["acción", "fantasía", "artes-marciales", "violento", "nocturno"],
+            description: "Un instituto donde los estudiantes son guerreros y los demonios acechan.",
+            plot: "Estudiantes con poderes sobrenaturales luchan contra una invasión demoníaca.",
+            analysis: "OVA de acción que mezcla artes marciales, demonios y estudiantes.",
+            forgotten: "Su distribución fuera de Japón fue muy limitada.",
+            reel: "https://video.fmga9-3.fna.fbcdn.net/o1/v/t2/f2/m412/AQPOTQ3McHbjlDIMgPNmFirizkaQMNyGCL31scwXPQpoi9B5cMB3UbeaOsv5uZPKZN2puVvOVywks5WrOgFlb3E7MfwC2z0VksPywxe-DA.mp4?_nc_cat=109&_nc_oc=AdqVb88xTCPGk9skUCvZPuosv7MT_dYJE8BoFe5_MqLk-91hy_EeW0rG_7TiEFjEKt4&_nc_sid=8bf8fe&_nc_ht=video.fmga9-3.fna.fbcdn.net&_nc_ohc=QXgWq3gLUmsQ7kNvwFiPW7Q&efg=eyJ2ZW5jb2RlX3RhZyI6Inhwdl9wcm9ncmVzc2l2ZS5GQUNFQk9PSy4uQzMuMzYwLnN2ZV9zZCIsInhwdl9hc3NldF9pZCI6MjA0NzA5NTEzOTI0OTYyOSwiYXNzZXRfYWdlX2RheXMiOjU1LCJ2aV91c2VjYXNlX2lkIjoxMDEyMiwiZHVyYXRpb25fcyI6NzIsInVybGdlbl9zb3VyY2UiOiJ3d3cifQ%3D%3D&ccb=17-1&_nc_gid=5P9lkars0hoVf119K__3yQ&_nc_ss=7b2a8&_nc_zt=28&oh=00_AQCeazsoZaE6m_FVu_Ngil_D94hHzj-lMdnlj4vNGaxcgQ&oe=6A6579E5&bitrate=302968&tag=sve_sd",
+            related: [10, 12, 14]
+        }, {
+            id: 12,
+            title: "Fatal Fury: Legend of the Hungry Wolf",
+            cover: "https://blogger.googleusercontent.com/img/a/AVvXsEhspOEcRcXEF6nNBS76BiZIwT6kvUqh2T4pcK-dboEEzu6moEIgF9knk1z6uRtutYjMbxpzrQ1eaOUgR20T1LzZ3TYvV32VYZrBd5cHuVVnIUox24ZyVoqwFfCvan4r5VER5AOwYTQqCjPRjft2bUrq6v1vNnpmBiVzFXYiKswmgX0Hg_6xChhZhKYGweAh=w270-h400",
+            year: 1992,
+            type: "Película",
+            duration: "45 min",
+            studio: "Studio Comet",
+            director: "Kazuhiro Furuhashi",
+            genre: ["Acción", "Artes marciales", "Videojuego"],
+            tags: ["acción", "artes-marciales", "videojuego", "violento"],
+            description: "Terry y Andy Bogard buscan venganza contra Geese Howard.",
+            plot: "Los hermanos Bogard se inscriben en el torneo King of Fighters para vengar a su padre.",
+            analysis: "Adaptación de uno de los juegos de lucha más emblemáticos de SNK.",
+            forgotten: "Su corta duración y lanzamiento directo en VHS la convirtieron en un producto de nicho.",
+            reel: "",
+            related: [13, 8, 10]
+        }, {
+            id: 13,
+            title: "Fatal Fury: The Motion Picture",
+            cover: "https://blogger.googleusercontent.com/img/a/AVvXsEjrEuTeh3tVg9ryum6QeQkJN6xazYf89Z7oNK-eBajqyKP0uNIJMGj1uwonOZDa6JYh-TqhXU5ClWjL9Y_tffLnvpaY8WW_d9KljrTH3FXDFpQ8yIpm0VNLtT-SJdSWNe-kRvCYGZjdyeJo2FGeywatI9dtyXE9e2v3UDEU31HBmJbZmgPiI3NDg5RyN9Rn=w267-h400",
+            year: 1994,
+            type: "Película",
+            duration: "90 min",
+            studio: "Studio Comet",
+            director: "Kazuhiro Furuhashi",
+            genre: ["Acción", "Artes marciales", "Videojuego"],
+            tags: ["acción", "artes-marciales", "videojuego", "violento", "aventura"],
+            description: "Terry, Andy y Joe deben detener a un nuevo villano.",
+            plot: "Los hermanos Bogard viajan por el mundo para detener a Laocorn.",
+            analysis: "Secuela cinematográfica con animación mejorada y acción trepidante.",
+            forgotten: "Es más conocida que la primera pero sigue siendo una rareza.",
+            reel: "",
+            related: [12, 10, 8]
+        }, {
+            id: 14,
+            title: "Angel's Egg",
+            cover: "https://blogger.googleusercontent.com/img/a/AVvXsEgpT1jNuTzFcNGlvP_d5_lDHHjtMW9ePw0DpS16mswMMzTqk3u1OlMW2lhq_IoSAebh45mPk-MSfChKGFVNZu7sf5pcgaz8LzzxkxcR1rvAE_ry1wG_Ahe1XC5dxZD9glLS17d2FzWf8CPkACqn8L3P20xE1jiFNi3hpmhwypLfyDwTBQfsio6YxxgdYqsc=w273-h400",
+            year: 1985,
+            type: "OVA",
+            duration: "71 min",
+            studio: "Studio Deen",
+            director: "Mamoru Oshii",
+            genre: ["Fantasía", "Ciencia ficción", "Experimental"],
+            tags: ["fantasía", "ciencia-ficción", "experimental", "melancólico", "nocturno", "silencio"],
+            description: "Una niña protege un huevo en un mundo post-apocalíptico.",
+            plot: "Una niña protege un huevo en un mundo sombrío mientras un soldado la sigue.",
+            analysis: "Obra de arte abstracta con casi sin diálogos. Visualmente impresionante.",
+            forgotten: "Su carácter experimental la convirtió en un producto de nicho.",
+            reel: "",
+            related: [16, 18, 24]
+        }, {
+            id: 15,
+            title: "Riki-Oh: The Wall of Hell",
+            cover: "https://blogger.googleusercontent.com/img/a/AVvXsEiORmSHwWGi3oHEFUMWIPqTD3U5fmIaA2TKUBNrafC-9oz4wHNVtIZfbtElebq7duDfo8JgV5DFLiXexpxKv_xmmF4ILY41KHs2DA2n3S-5jPryyIKFKYy-jCwBRE6LTtjZeHfSQtYVwMXTt2lykggD6f0XL-xkIrFu7E8tyJnbq_NHBtDQQ-AgXj3pqb2S=w300-h400",
+            year: 1989,
+            type: "OVA",
+            duration: "50 min",
+            studio: "J.C.Staff",
+            director: "Satoshi Dezaki",
+            genre: ["Acción", "Artes marciales", "Violencia"],
+            tags: ["acción", "artes-marciales", "violento", "gore", "experimental"],
+            description: "Un hombre con fuerza sobrehumana lucha contra la mafia en una prisión.",
+            plot: "Riki-Oh usa sus habilidades marciales para sobrevivir en una prisión privada.",
+            analysis: "Adaptación del manga más violento. Violencia exagerada que roza lo absurdo.",
+            forgotten: "Fue tan extremo que su distribución fue muy limitada.",
+            reel: "",
+            related: [8, 10, 12]
+        }, {
+            id: 16,
+            title: "Roujin Z",
+            cover: "https://blogger.googleusercontent.com/img/a/AVvXsEh9Qev2nFRnA3_XenbFLGXuzxoFMoz1DGAEb11LPKtaTeTTGa8osVTUx2Hg01JWsiI-deTwmvXp0OsTnGta4Ql0Urf2UOXQtKABn5ePPM7FxSiFbx_f2svogjUfnMYqbwOBkeEbqk2jetpPCwh-2KurEATFFz7PohG8w9R0UWe1_0mAG8L6ZnyA9453tq6w=w283-h400",
+            year: 1991,
+            type: "Película",
+            duration: "80 min",
+            studio: "A.P.P.P.",
+            director: "Hiroyuki Kitakubo",
+            genre: ["Ciencia ficción", "Comedia", "Sátira"],
+            tags: ["ciencia-ficción", "comedia", "sátira", "robot", "nostálgico"],
+            description: "Un robot de cuidados para ancianos se vuelve loco.",
+            plot: "El robot Z-001 se vuelve loco y decide llevarse al anciano que cuida.",
+            analysis: "Sátira divertidísima sobre el envejecimiento, la burocracia y la tecnología.",
+            forgotten: "No tuvo el éxito que merecía. Pasó desapercibida en su momento.",
+            reel: "",
+            related: [14, 18, 24]
+        }, {
+            id: 17,
+            title: "Megazone 23",
+            cover: "https://blogger.googleusercontent.com/img/a/AVvXsEjOR_8j-P8IlQtxomqCMf5JP1EMHHJre7Y4uLBmEGvibVE_K97A1xKWatKAhpXE5BtOwohTxHcqZhcw3czuywc-dUfVh-Eo-E5yFdvU1Ki71rNs8YOIt_oZ7lisf89pO1YWd7Nas1Wv1FRargMKN4Pkh6Y5xKS0gOmprS2Bq7wDHACPb47bouFj-9SiEbsM=w282-h400",
+            year: 1985,
+            type: "OVA",
+            duration: "80 min (Parte 1)",
+            studio: "AIC / Artmic",
+            director: "Noboru Ishiguro",
+            genre: ["Ciencia ficción", "Cyberpunk", "Mecha"],
+            tags: ["ciencia-ficción", "cyberpunk", "mecha", "robot", "experimental"],
+            description: "Un joven descubre que su mundo es una simulación.",
+            plot: "Shogo descubre que su realidad es una simulación y pilota la moto Garland.",
+            analysis: "Uno de los OVAs más influyentes. Inspiración para 'The Matrix' y 'Akira'.",
+            forgotten: "Nunca llegó a tener el reconocimiento masivo que merecía.",
+            reel: "",
+            related: [5, 19, 20]
+        }, {
+            id: 18,
+            title: "The Big O",
+            cover: "https://blogger.googleusercontent.com/img/a/AVvXsEj7-mkcswVVTnj1XM6Q5N4z_FqINV0df1k1EmEmDyB334sifXAk7fDYP4HPdczpBGavkXpo2oDM-avFm59b_CX3XUOQhFhqiH_83rjN3bKfrp3kqNZYL0QO6-LX3OTYCEuq_Ld9-9e_XmIGrFbApHbEnJVP6ifbo7WVNObLWI-TKyOJwv4fOeoeZ616koBK=w275-h400",
+            year: 1999,
+            type: "Serie",
+            duration: "26 episodios",
+            studio: "Sunrise",
+            director: "Kazuyoshi Katayama",
+            genre: ["Ciencia ficción", "Mecha", "Misterio"],
+            tags: ["ciencia-ficción", "mecha", "robot", "misterio", "nocturno"],
+            description: "Un negociador en una ciudad amnésica pilota un robot gigante.",
+            plot: "Roger Smith pilota a Big O para resolver conflictos en una ciudad sin memoria.",
+            analysis: "Combina cine negro, mecha y misterio. Estilo art deco y banda sonora de jazz.",
+            forgotten: "Fue un fracaso en Japón pero tuvo éxito moderado en Estados Unidos.",
+            reel: "",
+            related: [17, 19, 20]
+        }, {
+            id: 19,
+            title: "Video Girl Ai",
+            cover: "https://blogger.googleusercontent.com/img/a/AVvXsEgHIH47VvH-M1gWvURQLsKC5qaUObCRtjsshJ15IGIr3K9XA2YmQIWeqPnr2yChej1oNM5e1Jok0gH2cbv5SDHh1R2D4fBGI5DvLLQ4v1n9jcA1L4xZEah3tVDE12ECQ-gs7gEWldTY1PPXffxDO-uuWyOmz0XRhi_89Rls5bU22qYaxglnXgq2Ia2gxRVZ=w283-h400",
+            year: 1992,
+            type: "OVA",
+            duration: "6 episodios",
+            studio: "Production I.G",
+            director: "Mitsuo Hashimoto",
+            genre: ["Drama", "Romance", "Recuentos de la vida"],
+            tags: ["drama", "romance", "recuentos", "nostálgico", "melancólico"],
+            description: "Un chico alquila un video y la chica de la cinta cobra vida.",
+            plot: "Ai sale de la pantalla para ayudar a Yota a conquistar a su crush.",
+            analysis: "OVA romántico con toque de fantasía. Animación de Production I.G.",
+            forgotten: "Uno de esos OVAs que solo los más nostálgicos recuerdan.",
+            reel: "",
+            related: [4, 16, 21]
+        }, {
+            id: 20,
+            title: "Onikirimaru (Ogre Slayer)",
+            cover: "https://blogger.googleusercontent.com/img/a/AVvXsEhfRTGVWMNjNA8FpktX5T-wcvHs_U4-3tNWudg5ZVTucAIWuQ-gLW5yBHzMSr_zUA2s7hV-cDX6LkmqQ_cDe_hjOU_SJvUpO4KQoUFXXUb8yOAGilBwEJ_dIHL6txNsaj77OzYV72uXNvMxkqKZTamI-ToIE4UkChVUoJuOkbsW-r-SUwr_8b-RdO31MN8N=w298-h400",
+            year: 1994,
+            type: "OVA",
+            duration: "2 episodios",
+            studio: "J.C.Staff",
+            director: "Noboru Ishiguro",
+            genre: ["Acción", "Fantasía oscura", "Samurái"],
+            tags: ["acción", "fantasía", "samurái", "violento", "nocturno"],
+            description: "Un cazador de demonios en el Japón feudal.",
+            plot: "Onikirimaru es un cazador de demonios que enfrenta criaturas mitológicas.",
+            analysis: "OVA de acción con protagonista estoico y violencia coreografiada.",
+            forgotten: "Su distribución fue muy limitada. Joya oculta para coleccionistas.",
+            reel: "",
+            related: [10, 12, 17]
+        }, {
+            id: 21,
+            title: "Windaria",
+            cover: "https://blogger.googleusercontent.com/img/a/AVvXsEix78Fqbh6ik3yepcTAEvJbhsS8fCf-5WvKkmjmwN3Gd2Wn5lvQXtwvoVET_4AveNnJJTyRTF-bqlVJHFThCiWQFVH0cX68BCXFeZ8Vl_YwxKe_OgBFx6CoEucAYrSMFh4uRiRJCj6KsRIFkHVVmCXtGucaLDzB8qCK21k02oEOFa_lL9jngI1zBSdFQ_SV=w277-h400",
+            year: 1986,
+            type: "Película",
+            duration: "100 min",
+            studio: "Kaname Productions",
+            director: "Kunihiko Yuyama",
+            genre: ["Fantasía", "Aventura", "Romance"],
+            tags: ["fantasía", "aventura", "romance", "melancólico", "nostálgico"],
+            description: "Una historia de amor y guerra entre dos reinos.",
+            plot: "Un granjero se ve envuelto en una guerra cuando su prometida es secuestrada.",
+            analysis: "Fantasía que mezcla romance, guerra y política. Animación preciosa.",
+            forgotten: "Pasó sin pena ni gloria en su época. Joya para amantes de la fantasía.",
+            reel: "",
+            related: [1, 14, 24]
+        }, {
+            id: 22,
+            title: "Arion",
+            cover: "https://blogger.googleusercontent.com/img/a/AVvXsEjflOQyYmr0mUc0DgavnTYtoq8WZsVPZoUxSil_E_DpnEIosOpHoLQd5ig_MTK36QSxp_7xm0chFK-Qa9_3t1Xchf0vkI_vDn5YZgqyW86yylJX6qlxdj-DaUIJSB5eD0najdCpx5o19JYwlQCUr1EBvJESP6NPTh4qcDrgZH1pdLedgL8OuKq1OjdHToLO=w283-h400",
+            year: 1986,
+            type: "Película",
+            duration: "100 min",
+            studio: "Sunrise",
+            director: "Yoshikazu Yasuhiko",
+            genre: ["Fantasía", "Aventura", "Mitología"],
+            tags: ["fantasía", "aventura", "mitología", "épico", "color"],
+            description: "Un joven criado por los dioses busca venganza en la mitología griega.",
+            plot: "Arion emprende un viaje para vengar a su madre enfrentándose a los dioses.",
+            analysis: "Epopeya de fantasía basada en mitología griega. Animación espectacular.",
+            forgotten: "Una de las películas más caras de su época, pero no tuvo éxito.",
+            reel: "",
+            related: [14, 21, 24]
+        }, {
+            id: 23,
+            title: "Black Magic M-66",
+            cover: "https://blogger.googleusercontent.com/img/a/AVvXsEj_JQF1VKs7ohoOf9H-qOwE-MKNgYMiviWa4RQ-9dHElRvKqhO_vtxU6pX3INQZWyqKWI9bX6ukJKQq0LbB3M-ij4a6u2eMvIc_rEPQJh9Ay928mZtwW8n9QK_5iJARujrlj9iAuiV2_BZswrQYJKDi4N-fwXTpPIhjeDgRTLFX6SGP3LWK_ESTi4oVru9G=w288-h400",
+            year: 1987,
+            type: "OVA",
+            duration: "50 min",
+            studio: "AIC / Animate",
+            director: "Hiroyuki Kitakubo",
+            genre: ["Ciencia ficción", "Acción", "Cyberpunk"],
+            tags: ["ciencia-ficción", "acción", "cyberpunk", "robot", "violento"],
+            description: "Un androide militar se vuelve loco y una periodista debe detenerlo.",
+            plot: "El androide M-66 se vuelve loco y una periodista debe detenerlo.",
+            analysis: "Acción pura y dura. Clásico del cyberpunk de los 80.",
+            forgotten: "OVA que pasó desapercibido. Su distribución fue limitada.",
+            reel: "",
+            related: [17, 19, 25]
+        }, {
+            id: 24,
+            title: "Armitage III",
+            cover: "https://blogger.googleusercontent.com/img/a/AVvXsEjejqPa2c9gRE5oU7rFQVumo-MG5qiVlolApDb8Lz1WQ_SvQe7LjuX0yWIaWlAgrejE06vDsxMzcaPm2qGbICOzJIdPppkImUmirNdBX67P29sCVZlxIWG1GDXpZBvxZqqPbGNOOhKt3q1-UqV6iF3dKLjskZtBQYzUqBERMoTWlfTl2aHabDLt-ti0Yl8t=w283-h400",
+            year: 1995,
+            type: "OVA",
+            duration: "4 episodios",
+            studio: "AIC",
+            director: "Hiroyuki Ochi",
+            genre: ["Ciencia ficción", "Cyberpunk", "Acción"],
+            tags: ["ciencia-ficción", "cyberpunk", "acción", "robot", "futurista"],
+            description: "Una androide policía lucha contra una conspiración en Marte.",
+            plot: "Naomi Armitage investiga una conspiración que amenaza la paz en Marte.",
+            analysis: "Clásico del cyberpunk de los 90. Animación de primera y sólida historia.",
+            forgotten: "No llegó a tener la popularidad de otras series del género.",
+            reel: "",
+            related: [17, 23, 25]
+        }, {
+            id: 25,
+            title: "Dragon's Heaven",
+            cover: "https://blogger.googleusercontent.com/img/a/AVvXsEh3BdhnmVIGfi82Jck-emi3yVcDwlg_Mwo6o03yrCBTt5NpHjnWaOgtMgKVKSs4fjCWiJ-JLeLgwIDqR2YOxX2XTzp0PwwrZmOpuz1gx3tulfV0klJPNsWNb9UKvot4WblVmu1-ZaQoTqI2hOGNypI1m6GOQBJOP_thWZWSGQgW1ci-BZgpFlbKCXl-h0Im=w267-h400",
+            year: 1988,
+            type: "OVA",
+            duration: "1 episodio (40 minutos)",
+            studio: "AIC",
+            director: "Makoto Kobayashi",
+            genre: ["Ciencia Ficción", "Mecha", "Post-apocalíptico"],
+            tags: ["ciencia-ficción", "mecha", "robot", "post-apocalíptico", "experimental", "color"],
+            description: "Una armadura robótica consciente despierta tras mil años.",
+            plot: "La armadura Shaian despierta y lucha contra su archienemigo Elmadine.",
+            analysis: "Obra maestra visual influenciada por Moebius. Mezcla animación y maquetas.",
+            forgotten: "Una de las mayores rarezas ocultas del anime de los 80.",
+            reel: "",
+            related: [22, 24, 21]
+        }];
+
+        // ============================================================
+        // SISTEMA DE VIBES AUTOMÁTICO
+        // ============================================================
+        function generarVibesAutomaticos() {
+            const vibesSet = new Set();
+            animes.forEach(anime => {
+                if (anime.tags && Array.isArray(anime.tags)) {
+                    anime.tags.forEach(tag => {
+                        vibesSet.add(tag.toLowerCase().trim());
+                    });
+                }
+            });
+            const vibesBase = [
+                'melancólico', 'cyberpunk', 'nocturno', 'violento',
+                'comedia', 'experimental', 'nostálgico', 'musical',
+                'robot', 'terror', 'color', 'silencio',
+                'acción', 'aventura', 'drama', 'romance',
+                'fantasía', 'ciencia-ficción', 'histórico', 'espacial'
+            ];
+            vibesBase.forEach(v => vibesSet.add(v));
+            return Array.from(vibesSet).sort();
+        }
+
+        function buscarPorVibe(vibe) {
+            const vibeBusqueda = vibe.toLowerCase().trim();
+            const sinonimos = {
+                'robot': ['mecha', 'androide', 'cyborg', 'máquina', 'robótico', 'armadura'],
+                'terror': ['horror', 'espacial', 'paranormal', 'sobrenatural', 'claustrofóbico'],
+                'cyberpunk': ['cibernético', 'futurista', 'distópico', 'digital'],
+                'nocturno': ['oscuro', 'sombra', 'noche', 'tenebroso'],
+                'violento': ['gore', 'sangre', 'brutal', 'sádico'],
+                'melancólico': ['triste', 'nostálgico', 'depresivo', 'sombrío'],
+                'acción': ['pelea', 'combate', 'batalla', 'guerra'],
+                'fantasía': ['mágico', 'mitológico', 'épico', 'legendario'],
+                'ciencia-ficción': ['sci-fi', 'futurista', 'espacial', 'tecnológico']
+            };
+            const palabrasBuscar = [vibeBusqueda];
+            if (sinonimos[vibeBusqueda]) {
+                palabrasBuscar.push(...sinonimos[vibeBusqueda]);
+            }
+            const resultados = [];
+            animes.forEach(anime => {
+                let coincide = false;
+                if (anime.tags) {
+                    for (const tag of anime.tags) {
+                        const tagLower = tag.toLowerCase();
+                        for (const palabra of palabrasBuscar) {
+                            if (tagLower.includes(palabra) || palabra.includes(tagLower)) {
+                                coincide = true;
+                                break;
+                            }
+                        }
+                        if (coincide) break;
+                    }
+                }
+                if (!coincide && anime.genre) {
+                    for (const gen of anime.genre) {
+                        const genLower = gen.toLowerCase();
+                        for (const palabra of palabrasBuscar) {
+                            if (genLower.includes(palabra) || palabra.includes(genLower)) {
+                                coincide = true;
+                                break;
+                            }
+                        }
+                        if (coincide) break;
+                    }
+                }
+                if (!coincide) {
+                    const textoCompleto = `${anime.title} ${anime.description} ${anime.plot || ''}`.toLowerCase();
+                    for (const palabra of palabrasBuscar) {
+                        if (textoCompleto.includes(palabra)) {
+                            coincide = true;
+                            break;
+                        }
+                    }
+                }
+                if (coincide) {
+                    resultados.push(anime);
+                }
+            });
+            return resultados;
+        }
+
+        function renderizarVibes() {
+            const vibesCloud = document.getElementById('vibesCloud');
+            const vibes = generarVibesAutomaticos();
+            const vibesRelevantes = vibes.filter(v => 
+                !['película', 'ova', 'serie', '80s', '90s'].includes(v) && v.length > 2
+            );
+            const vibesMostrar = vibesRelevantes.slice(0, 24);
+            vibesCloud.innerHTML = vibesMostrar.map(vibe =>
+                `<button class="vibe-btn" data-vibe="${vibe}" onclick="filtrarPorVibe('${vibe}')">
+                    ${vibe.charAt(0).toUpperCase() + vibe.slice(1)}
+                    <span style="font-size:0.6rem;opacity:0.5;margin-left:4px;">
+                        (${buscarPorVibe(vibe).length})
+                    </span>
+                </button>`
+            ).join('');
+        }
+
+        function filtrarPorVibe(vibe) {
+            const searchInput = document.getElementById('searchInput');
+            const resultados = buscarPorVibe(vibe);
+            if (resultados.length > 0) {
+                searchInput.value = vibe;
+                searchInput.dispatchEvent(new Event('input'));
+                document.getElementById('catalogo').scrollIntoView({ behavior: 'smooth' });
+            } else {
+                alert(`No se encontraron obras con el vibe "${vibe}"`);
+            }
+        }
+
+        // ============================================================
+        // FUNCIONES PRINCIPALES
+        // ============================================================
+        let featuredId = null;
+
+        function renderCards() {
+            const grid = document.getElementById('animeGrid');
+            if (!animes || animes.length === 0) {
+                grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--text-muted);"><p style="font-size:1.2rem;margin-bottom:8px;">📭 No hay obras en el archivo</p></div>';
+                return;
+            }
+            grid.innerHTML = animes.map(anime => `
+                <div class="card" data-id="${anime.id}" data-type="${anime.type.toLowerCase()}" data-year="${anime.year}" data-genre="${anime.genre.join(',').toLowerCase()}" onclick="openModal(${anime.id})">
+                    <div class="card-image">
+                        <img src="${anime.cover}" alt="${anime.title}" loading="lazy" onerror="this.src='https://via.placeholder.com/400x600/1a1a25/8a8a9a?text=Sin+portada'">
+                        <span class="card-year">${anime.year}</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-tags">
+                            <span class="card-tag">${anime.type}</span>
+                            ${anime.genre.slice(0, 1).map(g => `<span class="card-tag">${g}</span>`).join('')}
+                        </div>
+                        <h3>${anime.title}</h3>
+                        <p>${anime.description}</p>
+                    </div>
+                    <div class="card-footer">
+                        <div class="card-vibes">
+                            ${anime.tags ? anime.tags.slice(0, 2).map(t => `<span class="vibe-tag">${t}</span>`).join('') : ''}
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function updateStats() {
+            const total = animes.length;
+            const ovas = animes.filter(a => a.type === 'OVA').length;
+            const pelis = animes.filter(a => a.type === 'Película').length;
+            animateCounter('statTotal', total);
+            animateCounter('statOVAs', ovas);
+            animateCounter('statPelis', pelis);
+        }
+
+        function animateCounter(id, target) {
+            const el = document.getElementById(id);
+            if (!el) return;
+            let current = 0;
+            const increment = Math.max(1, target / 30);
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) { current = target; clearInterval(timer); }
+                el.textContent = Math.floor(current);
+            }, 30);
+        }
+
+        function setupFeatured() {
+            if (!animes || animes.length === 0) {
+                document.getElementById('featuredTitle').textContent = 'Sin obras';
+                document.getElementById('featuredDesc').textContent = 'Añade obras en data.js';
+                return;
+            }
+            const today = new Date();
+            const dayIndex = today.getDate() % animes.length;
+            const anime = animes[dayIndex];
+            featuredId = anime.id;
+            document.getElementById('featuredImg').src = anime.cover;
+            document.getElementById('featuredImg').alt = anime.title;
+            document.getElementById('featuredYear').textContent = anime.year;
+            document.getElementById('featuredExpId').textContent = '#' + String(anime.id + 1).padStart(3, '0');
+            document.getElementById('featuredTitle').textContent = anime.title;
+            document.getElementById('featuredMeta').innerHTML =
+                `<span>📅 ${anime.year}</span><span>🎬 ${anime.studio}</span><span>👤 ${anime.director}</span>`;
+            document.getElementById('featuredDesc').textContent = anime.description;
+            document.getElementById('featuredTags').innerHTML =
+                `<span class="tag accent">${anime.type}</span>${anime.genre.map(g => `<span class="tag">${g}</span>`).join('')}<span class="tag">${anime.duration}</span>`;
+            document.getElementById('featuredCard').onclick = () => openModal(anime.id);
+        }
+
+        function setupSearch() {
+            const searchInput = document.getElementById('searchInput');
+            const searchClear = document.getElementById('searchClear');
+            const searchResults = document.getElementById('searchResults');
+            const cards = document.querySelectorAll('.card');
+            const noResults = document.getElementById('noResults');
+
+            function filterCards() {
+                const query = searchInput.value.toLowerCase().trim();
+                searchClear.classList.toggle('visible', query.length > 0);
+                if (query.length === 0) {
+                    searchResults.textContent = '';
+                    cards.forEach(c => c.classList.remove('hidden'));
+                    noResults.classList.remove('visible');
+                    return;
+                }
+                let visibleCount = 0;
+                cards.forEach(card => {
+                    const anime = animes.find(a => a.id == card.dataset.id);
+                    if (!anime) return;
+                    const match = anime.title.toLowerCase().includes(query) ||
+                        anime.description.toLowerCase().includes(query) ||
+                        anime.genre.some(g => g.toLowerCase().includes(query)) ||
+                        (anime.tags && anime.tags.some(t => t.toLowerCase().includes(query))) ||
+                        anime.studio.toLowerCase().includes(query) ||
+                        anime.director.toLowerCase().includes(query) ||
+                        String(anime.year).includes(query);
+                    card.classList.toggle('hidden', !match);
+                    if (match) visibleCount++;
+                });
+                searchResults.textContent = visibleCount > 0 ?
+                    `${visibleCount} resultado${visibleCount !== 1 ? 's' : ''} encontrado${visibleCount !== 1 ? 's' : ''}` : '';
+                noResults.classList.toggle('visible', visibleCount === 0);
+            }
+            searchInput.addEventListener('input', filterCards);
+            searchClear.addEventListener('click', function() {
+                searchInput.value = '';
+                filterCards();
+                searchInput.focus();
+            });
+        }
+
+        function setupFilters() {
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            const cards = document.querySelectorAll('.card');
+            const noResults = document.getElementById('noResults');
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const filter = this.dataset.filter;
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    let visibleCount = 0;
+                    cards.forEach(card => {
+                        const type = card.dataset.type;
+                        const year = parseInt(card.dataset.year);
+                        const genre = card.dataset.genre;
+                        let match = false;
+                        if (filter === 'all') match = true;
+                        else if (filter === 'ova') match = type === 'ova';
+                        else if (filter === 'pelicula') match = type === 'película';
+                        else if (filter === 'serie') match = type === 'serie';
+                        else if (filter === '80s') match = year >= 1980 && year < 1990;
+                        else if (filter === '90s') match = year >= 1990 && year < 2000;
+                        else match = genre.includes(filter);
+                        card.classList.toggle('hidden', !match);
+                        if (match) visibleCount++;
+                    });
+                    noResults.classList.toggle('visible', visibleCount === 0);
+                });
+            });
+        }
+
+        function setupListas() {
+            const container = document.getElementById('listasGrid');
+            if (!container) return;
+            const tagsCount = {};
+            animes.forEach(anime => {
+                if (anime.tags) {
+                    anime.tags.forEach(tag => {
+                        tagsCount[tag] = (tagsCount[tag] || 0) + 1;
+                    });
+                }
+            });
+            const tagsPopulares = Object.entries(tagsCount)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 6)
+                .map(([tag, count]) => ({
+                    tag: tag,
+                    count: count,
+                    icon: getIconForTag(tag)
+                }));
+            container.innerHTML = tagsPopulares.map(t =>
+                `<div class="lista-card" onclick="filtrarPorVibe('${t.tag}')">
+                    <div class="lista-icon">${t.icon}</div>
+                    <h3>${t.tag.charAt(0).toUpperCase() + t.tag.slice(1)}</h3>
+                    <p>${t.count} obras con esta temática</p>
+                    <div class="lista-count">${t.count} obras</div>
+                </div>`
+            ).join('');
+        }
+
+        function getIconForTag(tag) {
+            const icons = {
+                'robot': '🤖', 'mecha': '🦾', 'cyberpunk': '💻',
+                'terror': '👻', 'drama': '😢', 'acción': '⚔️',
+                'fantasía': '🐉', 'comedia': '😂', 'romance': '❤️',
+                'experimental': '🎨', 'nocturno': '🌙', 'violento': '💀',
+                'melancólico': '😔', 'nostálgico': '📼', 'espacial': '🚀',
+                'aventura': '🗺️', 'histórico': '🏯', 'ciencia-ficción': '🔬'
+            };
+            return icons[tag] || '📁';
+        }
+
+        // ============================================================
+        // MODAL CON REEL
+        // ============================================================
+        function openModal(id) {
+            const anime = animes.find(a => a.id === id);
+            if (!anime) return;
+
+            document.getElementById('modalImage').src = anime.cover;
+            document.getElementById('modalImage').alt = anime.title;
+            document.getElementById('modalTitle').textContent = anime.title;
+            document.getElementById('modalExpId').textContent = '#' + String(anime.id + 1).padStart(3, '0');
+            document.getElementById('modalMeta').innerHTML =
+                `<span>📅 ${anime.year}</span><span>🎬 ${anime.studio}</span><span>👤 ${anime.director}</span><span>⏱️ ${anime.duration}</span>`;
+            document.getElementById('modalTags').innerHTML =
+                anime.genre.map(g => `<span class="tag accent">${g}</span>`).join('');
+            document.getElementById('modalDesc').textContent = anime.description;
+            document.getElementById('modalPlot').textContent = anime.plot || 'Sin información disponible.';
+            document.getElementById('modalAnalysis').textContent = anime.analysis || 'Sin información disponible.';
+            document.getElementById('modalForgotten').textContent = anime.forgotten || 'Sin información disponible.';
+
+            const techList = [
+                `Estudio: ${anime.studio}`,
+                `Director: ${anime.director}`,
+                `Año: ${anime.year}`,
+                `Duración: ${anime.duration}`
+            ];
+            document.getElementById('modalTech').innerHTML = techList.map(t => `<li>${t}</li>`).join('');
+
+            // ============================================
+            // REEL - Configuración 9:16
+            // ============================================
+            const reelContainer = document.getElementById('modalReelContainer');
+            const reelFrame = document.getElementById('modalReelFrame');
+            if (anime.reel && anime.reel.trim() !== '') {
+                reelContainer.style.display = 'block';
+                let videoUrl = anime.reel;
+                // Soporte para YouTube
+                if (videoUrl.includes('youtube.com/watch?v=')) {
+                    const videoId = videoUrl.split('v=')[1].split('&')[0];
+                    videoUrl = `https://www.youtube.com/embed/${videoId}?autoplay=0&rel=0`;
+                }
+                reelFrame.src = videoUrl;
+            } else {
+                reelContainer.style.display = 'none';
+                reelFrame.src = '';
+            }
+
+            const relatedGrid = document.getElementById('relatedGrid');
+            if (anime.related && anime.related.length > 0) {
+                const relatedAnimes = animes.filter(a => anime.related.includes(a.id)).slice(0, 4);
+                relatedGrid.innerHTML = relatedAnimes.map(r =>
+                    `<div class="related-card" onclick="openModal(${r.id})">
+                        <h5>${r.title}</h5>
+                        <span>${r.year} · ${r.type}</span>
+                    </div>`
+                ).join('');
+            } else {
+                relatedGrid.innerHTML = '<p style="color:var(--text-muted);font-size:0.85rem;">No hay obras relacionadas.</p>';
+            }
+
+            document.getElementById('modalOverlay').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal(e) {
+            if (e && e.target !== document.getElementById('modalOverlay') &&
+                e.target !== document.querySelector('.modal-close')) return;
+            document.getElementById('modalOverlay').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function randomAnime() {
+            if (!animes || animes.length === 0) return;
+            const randomId = animes[Math.floor(Math.random() * animes.length)].id;
+            openModal(randomId);
+        }
+
+        function toggleMobileMenu() {
+            document.getElementById('mainNav').classList.toggle('active');
+        }
+
+        function setupScrollSpy() {
+            const sections = document.querySelectorAll('section[id]');
+            const navLinks = document.querySelectorAll('nav a');
+            window.addEventListener('scroll', () => {
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    if (window.scrollY >= sectionTop - 200) current = section.getAttribute('id');
+                });
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === '#' + current) link.classList.add('active');
+                });
+            });
+        }
+
+        function setupSmoothScroll() {
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) target.scrollIntoView({ behavior: 'smooth' });
+                    document.getElementById('mainNav').classList.remove('active');
+                });
+            });
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeModal();
+        });
+
+        // ============================================================
+        // INICIALIZACIÓN
+        // ============================================================
+        document.addEventListener('DOMContentLoaded', function() {
+            renderCards();
+            updateStats();
+            setupFeatured();
+            setupSearch();
+            setupFilters();
+            renderizarVibes();
+            setupListas();
+            setupScrollSpy();
+            setupSmoothScroll();
+        });
+    </script>
+</body>
+</html>
