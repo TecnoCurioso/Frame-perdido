@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Acerca de — Frame Perdido</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎞️</text></svg>" />
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a0a0f;
+            color: #e8e8f0;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            line-height: 1.8;
+        }
+        a {
+            color: #ff6b35;
+            text-decoration: none;
+        }
+        a:hover { text-decoration: underline; }
+        .back {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 10px 20px;
+            background: #ff6b35;
+            color: #fff;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <h1>📋 Acerca de Frame Perdido</h1>
+    
+    <p><strong>Frame Perdido</strong> es un archivo digital dedicado a rescatar y compartir anime clásico de los años 80 y 90 que quedó en el olvido.</p>
+    
+    <h2>🎯 Nuestra misión</h2>
+    <p>Recuperar OVAs, películas y series que marcaron una época pero nunca alcanzaron la fama de los grandes títulos. Queremos que nuevas generaciones descubran estas joyas ocultas.</p>
+    
+    <h2>👤 Sobre el autor</h2>
+    <p>Este proyecto es mantenido por <strong>Toonlab</strong>, un apasionado del anime clásico y la animación de los 80 y 90.</p>
+    
+      <a href="/Frame-perdido/" class="back">← Volver al inicio</a>
+</body>
+</html>
