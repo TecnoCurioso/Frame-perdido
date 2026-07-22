@@ -3,20 +3,16 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Reproductor — Frame Perdido</title>
+    <title>Frame Perdido — Reproductor</title>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg: #0a0a0f;
             --bg-card: #12121a;
-            --bg-elevated: #1a1a25;
             --text: #e8e8f0;
             --text-muted: #8a8a9a;
-            --text-dim: #5a5a6a;
             --accent: #ff6b35;
-            --accent-soft: #ff6b3520;
             --border: #2a2a3a;
-            --border-hover: #3a3a50;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -30,14 +26,13 @@
             padding: 20px;
         }
         .player-container {
-            max-width: 900px;
+            max-width: 960px;
             width: 100%;
         }
         .video-title {
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 1.4rem;
+            font-size: 1.3rem;
             font-weight: 700;
-            color: var(--text);
             margin-bottom: 16px;
             text-align: center;
         }
@@ -49,7 +44,6 @@
             border-radius: 16px;
             background: #000;
             border: 1px solid var(--border);
-            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
         }
         .player-wrapper iframe {
             position: absolute;
@@ -68,167 +62,61 @@
             text-decoration: none;
             font-size: 0.9rem;
             font-weight: 500;
-            transition: opacity 0.3s;
         }
         .back:hover { opacity: 0.7; }
 
-        /* Estado de error / no disponible */
+        /* Error */
         .error-box {
             background: var(--bg-card);
             border: 1px solid var(--border);
             border-radius: 20px;
             padding: 60px 40px;
             text-align: center;
-            max-width: 500px;
+            max-width: 480px;
             margin: 0 auto;
-        }
-        .error-icon {
-            font-size: 3rem;
-            margin-bottom: 20px;
         }
         .error-box h2 {
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 1.3rem;
-            color: var(--text);
+            font-size: 1.2rem;
             margin-bottom: 12px;
         }
         .error-box p {
             color: var(--text-muted);
             font-size: 0.9rem;
-            line-height: 1.6;
             margin-bottom: 8px;
         }
-        .error-box .id-received {
-            display: inline-block;
-            background: var(--bg-elevated);
-            border: 1px solid var(--border);
-            color: var(--text-dim);
-            padding: 6px 14px;
-            border-radius: 8px;
-            font-size: 0.8rem;
-            font-family: 'Space Grotesk', monospace;
-            margin: 16px 0;
-        }
-        .error-box .available-ids {
-            margin-top: 20px;
-            padding-top: 20px;
-            border-top: 1px solid var(--border);
-        }
-        .error-box .available-ids p {
-            font-size: 0.8rem;
-            color: var(--text-dim);
-            margin-bottom: 12px;
-        }
-        .id-chip {
-            display: inline-block;
-            background: var(--accent-soft);
-            color: var(--accent);
-            border: 1px solid var(--accent);
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            margin: 4px;
-            text-decoration: none;
-            transition: all 0.3s;
-            cursor: pointer;
-        }
-        .id-chip:hover {
-            background: var(--accent);
-            color: #fff;
-        }
-
-        /* Info debug */
-        .debug-info {
-            margin-top: 24px;
-            padding-top: 20px;
-            border-top: 1px solid var(--border);
-        }
-        .debug-info summary {
-            color: var(--text-dim);
-            font-size: 0.75rem;
-            cursor: pointer;
-            list-style: none;
-        }
-        .debug-info summary:hover { color: var(--text-muted); }
-        .debug-info pre {
-            text-align: left;
-            background: var(--bg-elevated);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 12px;
-            margin-top: 12px;
-            color: var(--text-muted);
-            font-size: 0.75rem;
-            overflow-x: auto;
-            line-height: 1.5;
-        }
     </style>
-<base target="_blank">
 </head>
 <body>
     <div class="player-container" id="container"></div>
 
     <script>
-        // ============================================================
-        // BASE DE DATOS DE VIDEOS
-        // ============================================================
-        // IMPORTANTE: Usa SOLO URLs de tipo embed
-        // https://www.youtube.com/embed/VIDEO_ID
-        // ============================================================
         const videos = {
             26: {
                 title: "Call Me Tonight",
-                url: "https://www.youtube-nocookie.com/embed/VoPvrHkgzZQ?si=hzTK1Y757ziJdUb2"
+                url: "https://www.youtube.com/embed/VoPvrHkgzZQ"
             }
-            // AÑADE MÁS AQUÍ:
-            // 24: { title: "Título", url: "https://www.youtube.com/embed/ID" },
         };
 
-        // ============================================================
-        // EXTRAER ID DE YOUTUBE DE CUALQUIER URL
-        // ============================================================
-        function extractYouTubeID(url) {
-            if (!url) return null;
-            const patterns = [
-                /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/|youtube\.com\/v\/|youtube\.com\/shorts\/)([a-zA-Z0-9_-]{11})/,
-                /^([a-zA-Z0-9_-]{11})$/
-            ];
-            for (const pattern of patterns) {
-                const match = url.match(pattern);
-                if (match) return match[1];
-            }
-            return null;
-        }
-
-        // ============================================================
-        // CONVERTIR CUALQUIER URL DE YOUTUBE A EMBED
-        // ============================================================
-        function toEmbedURL(url) {
-            const id = extractYouTubeID(url);
-            return id ? `https://www.youtube.com/embed/${id}` : null;
-        }
-
-        // ============================================================
-        // LEER PARÁMETROS DE LA URL
-        // ============================================================
         const params = new URLSearchParams(window.location.search);
-        const rawId = params.get('id');
+        const id = params.get('id');
         const container = document.getElementById('container');
 
-        // ============================================================
-        // RENDERIZAR
-        // ============================================================
-        if (rawId && videos[rawId]) {
-            // ✅ VIDEO ENCONTRADO — Reproducir
-            const video = videos[rawId];
-            const embedUrl = video.url.includes('/embed/') ? video.url : toEmbedURL(video.url);
+        if (id && videos[id]) {
+            const video = videos[id];
+            // Parámetros para ocultar elementos de YouTube:
+            // ?rel=0           → No muestra videos relacionados al final
+            // &modestbranding=1 → Logo de YouTube más pequeño/discreto
+            // &iv_load_policy=3 → Oculta anotaciones del video
+            // &fs=1             → Permite pantalla completa
+            // &autoplay=0       → No reproduce automáticamente
+            const cleanUrl = video.url + "?rel=0&modestbranding=1&iv_load_policy=3";
 
             container.innerHTML = `
                 <h1 class="video-title">${video.title}</h1>
                 <div class="player-wrapper">
                     <iframe 
-                        src="${embedUrl}" 
+                        src="${cleanUrl}" 
                         title="${video.title}" 
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
                         allowfullscreen>
@@ -237,44 +125,12 @@
                 <a href="index.html" class="back">← Volver al catálogo</a>
             `;
             document.title = video.title + " — Frame Perdido";
-
         } else {
-            // ❌ VIDEO NO ENCONTRADO — Mostrar error amigable
-            const availableIds = Object.keys(videos);
-
             container.innerHTML = `
                 <div class="error-box">
-                    <div class="error-icon">🔒</div>
-                    <h2>Contenido no disponible</h2>
-                    <p>Este expediente aún no tiene video asociado en nuestro archivo.</p>
-                    <span class="id-received">ID solicitado: ${rawId || 'ninguno'}</span>
-
-                    ${availableIds.length > 0 ? `
-                    <div class="available-ids">
-                        <p>Videos disponibles:</p>
-                        ${availableIds.map(id => `
-                            <a href="?id=${id}" class="id-chip">ID ${id}: ${videos[id].title}</a>
-                        `).join('')}
-                    </div>
-                    ` : ''}
-
-                    <a href="index.html" class="back" style="margin-top:24px;">← Volver al catálogo</a>
-
-                    <details class="debug-info">
-                        <summary>ℹ️ Información técnica</summary>
-                        <pre>URL completa: ${window.location.href}
-ID extraído: ${rawId || 'null'}
-IDs registrados: [${availableIds.join(', ')}]
-
-Para añadir un video, edita el objeto 'videos' en este archivo:
-
-const videos = {
-    ${rawId || 'ID'}: {
-        title: "Título del anime",
-        url: "https://www.youtube.com/embed/VIDEO_ID"
-    }
-};</pre>
-                    </details>
+                    <h2>🔒 Contenido no disponible</h2>
+                    <p>Este expediente aún no tiene video en nuestro archivo.</p>
+                    <a href="index.html" class="back">← Volver al catálogo</a>
                 </div>
             `;
             document.title = "No disponible — Frame Perdido";
