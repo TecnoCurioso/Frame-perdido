@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Frame Perdido — Reproductor</title>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css">
     <style>
         :root {
             --bg: #0a0a0f;
@@ -13,6 +14,17 @@
             --text-muted: #8a8a9a;
             --accent: #ff6b35;
             --border: #2a2a3a;
+            --plyr-color-main: #ff6b35;
+            --plyr-video-control-color: #e8e8f0;
+            --plyr-video-control-color-hover: #fff;
+            --plyr-video-control-background-hover: rgba(255,107,53,0.2);
+            --plyr-range-fill-background: #ff6b35;
+            --plyr-range-thumb-background: #ff6b35;
+            --plyr-range-thumb-shadow: 0 0 10px rgba(255,107,53,0.5);
+            --plyr-menu-background: #12121a;
+            --plyr-menu-color: #e8e8f0;
+            --plyr-tooltip-background: #1a1a25;
+            --plyr-tooltip-color: #e8e8f0;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -25,45 +37,84 @@
             justify-content: center;
             padding: 20px;
         }
-        .player-container {
-            max-width: 960px;
+        .player-page {
+            max-width: 1100px;
             width: 100%;
+        }
+        .video-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+            gap: 10px;
         }
         .video-title {
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 1.3rem;
+            font-size: 1.4rem;
             font-weight: 700;
-            margin-bottom: 16px;
-            text-align: center;
         }
-        .player-wrapper {
-            position: relative;
-            padding-bottom: 56.25%;
-            height: 0;
-            overflow: hidden;
-            border-radius: 16px;
-            background: #000;
-            border: 1px solid var(--border);
+        .video-meta {
+            color: var(--text-muted);
+            font-size: 0.85rem;
         }
-        .player-wrapper iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border: 0;
-            border-radius: 16px;
-        }
-        .back {
-            display: block;
-            text-align: center;
-            margin-top: 20px;
+        .back-btn {
             color: var(--accent);
             text-decoration: none;
             font-size: 0.9rem;
             font-weight: 500;
+            transition: opacity 0.3s;
         }
-        .back:hover { opacity: 0.7; }
+        .back-btn:hover { opacity: 0.7; }
+
+        /* Contenedor Plyr con bordes redondeados */
+        .plyr-container {
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        }
+        .plyr--video {
+            border-radius: 16px;
+        }
+        /* Forzar controles siempre visibles al hover */
+        .plyr--video .plyr__controls {
+            padding: 16px 20px;
+        }
+
+        /* Info del expediente */
+        .expediente-info {
+            margin-top: 24px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+        }
+        .expediente-info h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1rem;
+            color: var(--accent);
+            margin-bottom: 12px;
+        }
+        .expediente-info p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            line-height: 1.7;
+        }
+        .expediente-tags {
+            display: flex;
+            gap: 8px;
+            margin-top: 16px;
+            flex-wrap: wrap;
+        }
+        .exp-tag {
+            background: #1a1a25;
+            color: var(--text-muted);
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            border: 1px solid var(--border);
+        }
 
         /* Error */
         .error-box {
@@ -77,60 +128,104 @@
         }
         .error-box h2 {
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             margin-bottom: 12px;
         }
         .error-box p {
             color: var(--text-muted);
             font-size: 0.9rem;
-            margin-bottom: 8px;
+        }
+        .error-box .id-received {
+            display: inline-block;
+            background: #1a1a25;
+            border: 1px solid var(--border);
+            color: #5a5a6a;
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-family: 'Space Grotesk', monospace;
+            margin: 12px 0;
+        }
+
+        @media (max-width: 768px) {
+            .video-title { font-size: 1.1rem; }
         }
     </style>
 </head>
 <body>
-    <div class="player-container" id="container"></div>
+    <div class="player-page" id="app"></div>
 
+    <script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
     <script>
         const videos = {
             26: {
                 title: "Call Me Tonight",
-                url: "https://www.youtube-nocookie.com/embed/VoPvrHkgzZQ?si=hzTK1Y757ziJdUb2"
+                year: 1986,
+                studio: "AIC",
+                director: "Tatsuya Okamoto",
+                url: "https://www.youtube.com/embed/VoPvrHkgzZQ",
+                desc: "Una de las obras más extrañas de los 80. Un híbrido entre comedia, horror y ciencia ficción que solo podía existir en la era del OVA.",
+                tags: ["OVA", "Sci-Fi", "Comedia", "Horror"]
             }
         };
 
         const params = new URLSearchParams(window.location.search);
         const id = params.get('id');
-        const container = document.getElementById('container');
+        const app = document.getElementById('app');
 
         if (id && videos[id]) {
-            const video = videos[id];
-            // Parámetros para ocultar elementos de YouTube:
-            // ?rel=0           → No muestra videos relacionados al final
-            // &modestbranding=1 → Logo de YouTube más pequeño/discreto
-            // &iv_load_policy=3 → Oculta anotaciones del video
-            // &fs=1             → Permite pantalla completa
-            // &autoplay=0       → No reproduce automáticamente
-            const cleanUrl = video.url + "?rel=0&modestbranding=1&iv_load_policy=3";
+            const v = videos[id];
+            const cleanUrl = v.url + "?rel=0&modestbranding=1&iv_load_policy=3&origin=" + encodeURIComponent(window.location.origin);
 
-            container.innerHTML = `
-                <h1 class="video-title">${video.title}</h1>
-                <div class="player-wrapper">
-                    <iframe 
-                        src="${cleanUrl}" 
-                        title="${video.title}" 
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                        allowfullscreen>
-                    </iframe>
+            app.innerHTML = `
+                <div class="video-header">
+                    <div>
+                        <h1 class="video-title">${v.title}</h1>
+                        <span class="video-meta">${v.year} · ${v.studio} · ${v.director}</span>
+                    </div>
+                    <a href="index.html" class="back-btn">← Volver</a>
                 </div>
-                <a href="index.html" class="back">← Volver al catálogo</a>
+
+                <div class="plyr-container">
+                    <div class="plyr__video-embed" id="player">
+                        <iframe
+                            src="${cleanUrl}"
+                            allowfullscreen
+                            allowtransparency
+                            allow="autoplay; encrypted-media; picture-in-picture; web-share"
+                        ></iframe>
+                    </div>
+                </div>
+
+                <div class="expediente-info">
+                    <h3>📁 Sobre este expediente</h3>
+                    <p>${v.desc}</p>
+                    <div class="expediente-tags">
+                        ${v.tags.map(t => `<span class="exp-tag">${t}</span>`).join('')}
+                    </div>
+                </div>
             `;
-            document.title = video.title + " — Frame Perdido";
+            document.title = v.title + " — Frame Perdido";
+
+            // Inicializar Plyr
+            const player = new Plyr('#player', {
+                youtube: {
+                    noCookie: false,
+                    rel: 0,
+                    modestbranding: 1,
+                    iv_load_policy: 3
+                },
+                tooltips: { controls: true, seek: true },
+                keyboard: { focused: true, global: true }
+            });
+
         } else {
-            container.innerHTML = `
+            app.innerHTML = `
                 <div class="error-box">
                     <h2>🔒 Contenido no disponible</h2>
                     <p>Este expediente aún no tiene video en nuestro archivo.</p>
-                    <a href="index.html" class="back">← Volver al catálogo</a>
+                    <span class="id-received">ID: ${id || 'ninguno'}</span>
+                    <a href="index.html" class="back-btn" style="margin-top:20px;display:inline-block;">← Volver al catálogo</a>
                 </div>
             `;
             document.title = "No disponible — Frame Perdido";
