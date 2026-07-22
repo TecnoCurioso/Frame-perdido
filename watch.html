@@ -77,9 +77,37 @@
         .plyr--video {
             border-radius: 16px;
         }
-        /* Forzar controles siempre visibles al hover */
         .plyr--video .plyr__controls {
             padding: 16px 20px;
+        }
+
+        /* Selector de episodios */
+        .episode-selector {
+            display: flex;
+            justify-content: center;
+            gap: 6px;
+            margin: 16px 0;
+            flex-wrap: wrap;
+        }
+        .episode-btn {
+            padding: 5px 12px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 0.75rem;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s;
+        }
+        .episode-btn:hover {
+            border-color: var(--accent);
+            color: var(--text);
+        }
+        .episode-btn.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fff;
         }
 
         /* Info del expediente */
@@ -157,30 +185,128 @@
 
     <script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
     <script>
+        // ============================================================
+        // BASE DE DATOS DE VIDEOS
+        // ============================================================
         const videos = {
+            // ============================================================
+            // EJEMPLO CON 1 EPISODIO
+            // ============================================================
             26: {
                 title: "Call Me Tonight",
                 year: 1986,
                 studio: "AIC",
                 director: "Tatsuya Okamoto",
-                url: "https://www.youtube.com/embed/VoPvrHkgzZQ",
                 desc: "Una de las obras más extrañas de los 80. Un híbrido entre comedia, horror y ciencia ficción que solo podía existir en la era del OVA.",
-                tags: ["OVA", "Sci-Fi", "Comedia", "Horror"]
+                tags: ["OVA", "Sci-Fi", "Comedia", "Horror"],
+                episodios: [
+                    { num: 1, version: "", url: "https://www.youtube.com/embed/VoPvrHkgzZQ" }
+                ]
+            },
+            // ============================================================
+            // EJEMPLO CON 13 EPISODIOS + SUB Y DOBLADO
+            // ============================================================
+            27: {
+                title: "Record of Lodoss War (OVA)",
+                year: 1990,
+                studio: "Madhouse",
+                director: "Akinori Nagaoka",
+                desc: "Un grupo de héroes debe enfrentar las fuerzas del mal que amenazan el continente de Lodoss. Una de las obras más influyentes del anime de fantasía.",
+                tags: ["OVA", "Fantasía", "Aventura", "Épico"],
+                episodios: [
+                    // Sub (13 episodios)
+                    { num: 1, version: "Sub", url: "https://mega.nz/embed/H4Qz0QJa#NFe01m2kAcc73tn43vuRneq7khd2zado6XhgZbAPdP0" },
+                    { num: 2, version: "Sub", url: "https://www.youtube.com/embed/ID_SUB_2" },
+                    { num: 3, version: "Sub", url: "https://www.youtube.com/embed/ID_SUB_3" },
+                    { num: 4, version: "Sub", url: "https://www.youtube.com/embed/ID_SUB_4" },
+                    { num: 5, version: "Sub", url: "https://www.youtube.com/embed/ID_SUB_5" },
+                    { num: 6, version: "Sub", url: "https://www.youtube.com/embed/ID_SUB_6" },
+                    { num: 7, version: "Sub", url: "https://www.youtube.com/embed/ID_SUB_7" },
+                    { num: 8, version: "Sub", url: "https://www.youtube.com/embed/ID_SUB_8" },
+                    { num: 9, version: "Sub", url: "https://www.youtube.com/embed/ID_SUB_9" },
+                    { num: 10, version: "Sub", url: "https://www.youtube.com/embed/ID_SUB_10" },
+                    { num: 11, version: "Sub", url: "https://www.youtube.com/embed/ID_SUB_11" },
+                    { num: 12, version: "Sub", url: "https://www.youtube.com/embed/ID_SUB_12" },
+                    { num: 13, version: "Sub", url: "https://www.youtube.com/embed/ID_SUB_13" },
+                    // Doblado (13 episodios)
+                    { num: 1, version: "Dob", url: "https://www.youtube.com/embed/ID_DOB_1" },
+                    { num: 2, version: "Dob", url: "https://www.youtube.com/embed/ID_DOB_2" },
+                    { num: 3, version: "Dob", url: "https://www.youtube.com/embed/ID_DOB_3" },
+                    { num: 4, version: "Dob", url: "https://www.youtube.com/embed/ID_DOB_4" },
+                    { num: 5, version: "Dob", url: "https://www.youtube.com/embed/ID_DOB_5" },
+                    { num: 6, version: "Dob", url: "https://www.youtube.com/embed/ID_DOB_6" },
+                    { num: 7, version: "Dob", url: "https://www.youtube.com/embed/ID_DOB_7" },
+                    { num: 8, version: "Dob", url: "https://www.youtube.com/embed/ID_DOB_8" },
+                    { num: 9, version: "Dob", url: "https://www.youtube.com/embed/ID_DOB_9" },
+                    { num: 10, version: "Dob", url: "https://www.youtube.com/embed/ID_DOB_10" },
+                    { num: 11, version: "Dob", url: "https://www.youtube.com/embed/ID_DOB_11" },
+                    { num: 12, version: "Dob", url: "https://www.youtube.com/embed/ID_DOB_12" },
+                    { num: 13, version: "Dob", url: "https://www.youtube.com/embed/ID_DOB_13" }
+                ]
             }
         };
 
+        // ============================================================
+        // LEER PARÁMETROS DE LA URL
+        // ============================================================
         const params = new URLSearchParams(window.location.search);
         const id = params.get('id');
+        const ep = parseInt(params.get('ep')) || 1;
+        const version = params.get('version') || null;
+
         const app = document.getElementById('app');
 
+        // ============================================================
+        // BUSCAR EL ANIME
+        // ============================================================
         if (id && videos[id]) {
             const v = videos[id];
-            const cleanUrl = v.url + "?rel=0&modestbranding=1&iv_load_policy=3&origin=" + encodeURIComponent(window.location.origin);
+            const episodios = v.episodios;
+
+            // Buscar el episodio solicitado
+            let episodioActual = episodios.find(e => e.num === ep && (version ? e.version === version : true));
+            if (!episodioActual) {
+                episodioActual = episodios[0];
+            }
+
+            // Generar botones de episodios
+            let botonesHtml = '';
+            if (episodios.length > 1) {
+                botonesHtml = `<div class="episode-selector">`;
+                episodios.forEach(e => {
+                    const isActive = (e.num === episodioActual.num && e.version === episodioActual.version);
+                    const activeClass = isActive ? 'active' : '';
+                    let label = '';
+                    if (e.version) {
+                        label = `${e.version}${e.num}`;
+                    } else {
+                        label = `Ep. ${e.num}`;
+                    }
+                    botonesHtml += `
+                        <button class="episode-btn ${activeClass}" 
+                                onclick="cambiarEpisodio(${id}, ${e.num}, '${e.version}')">
+                            ${label}
+                        </button>
+                    `;
+                });
+                botonesHtml += `</div>`;
+            }
+
+            // URL limpia
+            const cleanUrl = episodioActual.url + "?rel=0&modestbranding=1&iv_load_policy=3&origin=" + encodeURIComponent(window.location.origin);
+
+            // Título con episodio
+            let titleSuffix = '';
+            if (episodioActual.version) {
+                titleSuffix = ` — ${episodioActual.version} ${episodioActual.num}`;
+            } else if (episodios.length > 1) {
+                titleSuffix = ` — Episodio ${episodioActual.num}`;
+            }
 
             app.innerHTML = `
                 <div class="video-header">
                     <div>
-                        <h1 class="video-title">${v.title}</h1>
+                        <h1 class="video-title">${v.title}${titleSuffix}</h1>
                         <span class="video-meta">${v.year} · ${v.studio} · ${v.director}</span>
                     </div>
                     <a href="index.html" class="back-btn">← Volver</a>
@@ -197,6 +323,8 @@
                     </div>
                 </div>
 
+                ${botonesHtml}
+
                 <div class="expediente-info">
                     <h3>📁 Sobre este expediente</h3>
                     <p>${v.desc}</p>
@@ -205,19 +333,22 @@
                     </div>
                 </div>
             `;
-            document.title = v.title + " — Frame Perdido";
 
-            // Inicializar Plyr
-            const player = new Plyr('#player', {
-                youtube: {
-                    noCookie: false,
-                    rel: 0,
-                    modestbranding: 1,
-                    iv_load_policy: 3
-                },
-                tooltips: { controls: true, seek: true },
-                keyboard: { focused: true, global: true }
-            });
+            document.title = v.title + titleSuffix + " — Frame Perdido";
+
+            // Inicializar Plyr (solo si el video existe)
+            if (document.getElementById('player')) {
+                const player = new Plyr('#player', {
+                    youtube: {
+                        noCookie: false,
+                        rel: 0,
+                        modestbranding: 1,
+                        iv_load_policy: 3
+                    },
+                    tooltips: { controls: true, seek: true },
+                    keyboard: { focused: true, global: true }
+                });
+            }
 
         } else {
             app.innerHTML = `
@@ -229,6 +360,17 @@
                 </div>
             `;
             document.title = "No disponible — Frame Perdido";
+        }
+
+        // ============================================================
+        // FUNCIÓN PARA CAMBIAR DE EPISODIO
+        // ============================================================
+        function cambiarEpisodio(id, num, version) {
+            let url = `watch.html?id=${id}&ep=${num}`;
+            if (version) {
+                url += `&version=${version}`;
+            }
+            window.location.href = url;
         }
     </script>
 </body>
