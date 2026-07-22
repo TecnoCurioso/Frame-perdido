@@ -1562,7 +1562,25 @@
             forgotten: "Una de las mayores rarezas ocultas del anime de los 80.",
             reel: "",
             related: [22, 24, 21]
-        }];
+        }
+         {
+    "id": 26,
+    "title": "Call Me Tonight",
+    "cover": "https://blogger.googleusercontent.com/img/a/AVvXsEiHPEopvDzhqnnHL_lvRjvfR8q8Ms25q9BQNlhszkndP3BA69WihVab7JAVgzIYM5VVV8voQ6vv86rL5uMnQaipzDFyudrUITav9KNYhE2EGBgmJa4TqGkfU21wXeOJswRAOrsUpYTrBMo7fsPXSiVArNiSC4Z7dgQ_Kb8Xd6aeW4BcBpidwTBih0MyqQmU=w273-h400",
+    "year": 1986,
+    "type": "OVA",
+    "duration": "1 episodio (35 minutos)",
+    "studio": "AIC",
+    "director": "Tatsuya Okamoto",
+    "genre": ["Comedia", "Romance", "Sobrenatural", "Ecchi", "Erótico"],
+    "tags": ["comedia", "romance", "sobrenatural", "ecchi", "erótico", "nostálgico", "oculto", "nocturno"],
+    "description": "Una chica llamada Rumi es una succubus que vive en Tokio y tiene que alimentarse de energía masculina. Pero su nuevo cliente, un tímido oficinista, no es lo que parece.",
+    "plot": "Rumi trabaja en una agencia de acompañantes, pero en realidad es una succubus. Su trabajo consiste en extraer energía masculina de sus clientes. Todo va bien hasta que conoce a Akira, un oficinista que no se deja seducir fácilmente y que guarda un oscuro secreto.",
+    "analysis": "Una comedia romántica con toques sobrenaturales y ecchi que mezcla el humor con situaciones absurdas y algo picantes. Tiene un ritmo ágil, diálogos ingeniosos y un diseño de personajes carismático. Es una rareza de los 80 que merece ser redescubierta.",
+    "forgotten": "Es una de esas OVAs que nunca tuvieron distribución internacional y hoy es prácticamente desconocida. Su temática y su estética la hacen una joya oculta para los amantes del anime ochentero con humor adulto.",
+    "reel": "https://video.fmga9-3.fna.fbcdn.net/o1/v/t2/f2/m412/AQOw9D9C6CsmaXB7pu7kd3hGj_R7iQJezgBcqQKJYFhOAHHfO4sFeXykzBMWwJFrkT40fntqMqNzDzvTZfkAmBzrOzbk4_lY_LCYjUHgmw.mp4?_nc_cat=110&_nc_oc=AdqGRIckt0dcNQcdMk1-liSc8-AN5DMSKBL6YGeQ9mKm6qHF2UPK4zTpT-rSOos20ks&_nc_sid=8bf8fe&_nc_ht=video.fmga9-3.fna.fbcdn.net&_nc_ohc=HjNI4oQWijwQ7kNvwG8efHv&efg=eyJ2ZW5jb2RlX3RhZyI6Inhwdl9wcm9ncmVzc2l2ZS5GQUNFQk9PSy4uQzMuMzYwLnN2ZV9zZCIsInhwdl9hc3NldF9pZCI6MTMzODQ1NTU4MTA3MTc4NSwiYXNzZXRfYWdlX2RheXMiOjE3LCJ2aV91c2VjYXNlX2lkIjoxMDEyMiwiZHVyYXRpb25fcyI6NjgsInVybGdlbl9zb3VyY2UiOiJ3d3cifQ%3D%3D&ccb=17-1&_nc_gid=cVLzrqJ3V16UykojMenGTQ&_nc_ss=7b2a8&_nc_zt=28&oh=00_AQCpmZ6CY1u6NwJhDcyp2I296uQy_8lA2aPplJppOhOAJA&oe=6A66DBE4&bitrate=322490&tag=sve_sd",
+    "related": [21, 16, 4]
+} ];
 
         // ============================================================
         // SISTEMA DE VIBES AUTOMÁTICO
@@ -1700,13 +1718,19 @@
                         </div>
                         <h3>${anime.title}</h3>
                         <p>${anime.description}</p>
-                    </div>
-                    <div class="card-footer">
-                        <div class="card-vibes">
-                            ${anime.tags ? anime.tags.slice(0, 2).map(t => `<span class="vibe-tag">${t}</span>`).join('') : ''}
-                        </div>
-                    </div>
-                </div>
+                   </div>
+<div class="card-footer">
+    <!-- ========================================== -->
+    <!-- ENLACE AL REPRODUCTOR (solo ícono)        -->
+    <!-- ========================================== -->
+    <a href="watch.html?id=${anime.id}" style="color:var(--text-muted);text-decoration:none;font-size:0.8rem;" title="Reproducir">
+        ⏵
+    </a>
+    <div class="card-vibes">
+        ${anime.tags ? anime.tags.slice(0, 2).map(t => `<span class="vibe-tag">${t}</span>`).join('') : ''}
+    </div>
+</div>
+</div>
             `).join('');
         }
 
