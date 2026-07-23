@@ -1724,6 +1724,12 @@ var animes = [{
                 grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--text-muted);"><p style="font-size:1.2rem;margin-bottom:8px;">📭 No hay obras en el archivo</p></div>';
                 return;
             }
+
+            <a href="watch.html?id=${anime.id}" style="color:var(--text-muted);text-decoration:none;font-size:0.9rem;" title="Reproducir">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polygon points="5 3 19 12 5 21 5 3"></polygon>
+    </svg>
+</a>
             grid.innerHTML = animes.map(anime => `
                 <div class="card" data-id="${anime.id}" data-type="${anime.type.toLowerCase()}" data-year="${anime.year}" data-genre="${anime.genre.join(',').toLowerCase()}" onclick="openModal(${anime.id})">
                     <div class="card-image">
